@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +7,52 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #050507;
-    --surface: #0d0d12;
-    --border: rgba(255,255,255,0.07);
-    --accent: #6EFFD5;
-    --accent2: #4B8BFF;
-    --text: #f0f0f5;
-    --muted: rgba(240,240,245,0.45);
-    --glow: rgba(110,255,213,0.18);
+  /* ══════════════════════════════════════════
+     THEME VARIABLES
+  ══════════════════════════════════════════ */
+  [data-theme="dark"] {
+    --bg:       #050507;
+    --surface:  #0d0d12;
+    --surface2: #111118;
+    --border:   rgba(255,255,255,0.07);
+    --accent:   #6EFFD5;
+    --accent2:  #4B8BFF;
+    --text:     #f0f0f5;
+    --muted:    rgba(240,240,245,0.45);
+    --glow:     rgba(110,255,213,0.18);
+    --shadow:   rgba(0,0,0,0.6);
+    --device-bg: linear-gradient(145deg,#1a1a24 0%,#0d0d14 60%,#0a1520 100%);
+    --device-screen-bg: linear-gradient(135deg,#080b14,#0d1520);
+    --phone-bg:  linear-gradient(145deg,#12121c,#0a0a12);
+    --blob1-color: rgba(110,255,213,.13);
+    --blob2-color: rgba(75,139,255,.1);
+    --toggle-icon: "☀️";
   }
 
+  [data-theme="light"] {
+    --bg:       #f5f5f7;
+    --surface:  #ffffff;
+    --surface2: #ebebf0;
+    --border:   rgba(0,0,0,0.09);
+    --accent:   #00a67e;
+    --accent2:  #1a56db;
+    --text:     #0a0a10;
+    --muted:    rgba(10,10,16,0.5);
+    --glow:     rgba(0,166,126,0.12);
+    --shadow:   rgba(0,0,0,0.12);
+    --device-bg: linear-gradient(145deg,#e8eaf0 0%,#d8dae8 60%,#c8d0e0 100%);
+    --device-screen-bg: linear-gradient(135deg,#d0d4e8,#c4cce0);
+    --phone-bg: linear-gradient(145deg,#f0f0f8,#e4e4f0);
+    --blob1-color: rgba(0,166,126,.1);
+    --blob2-color: rgba(26,86,219,.08);
+    --toggle-icon: "🌙";
+  }
+
+  /* ══════════════════════════════════════════
+     RESET & BASE
+  ══════════════════════════════════════════ */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     background: var(--bg);
     color: var(--text);
@@ -29,9 +60,29 @@
     font-weight: 300;
     overflow-x: hidden;
     cursor: default;
+    transition: background .4s, color .4s;
+    max-width: 100vw;
   }
 
-  /* ── NAV ── */
+  /* ══════════════════════════════════════════
+     THEME TOGGLE BUTTON
+  ══════════════════════════════════════════ */
+  .theme-toggle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    border: 1px solid var(--border);
+    cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .3s, border-color .3s, transform .2s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,.15); transform: rotate(15deg); }
+  [data-theme="light"] .theme-toggle { background: rgba(0,0,0,.05); }
+  [data-theme="light"] .theme-toggle:hover { background: rgba(0,0,0,.1); }
+
+  /* ══════════════════════════════════════════
+     NAV
+  ══════════════════════════════════════════ */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
@@ -39,13 +90,17 @@
     backdrop-filter: blur(20px);
     background: rgba(5,5,7,0.7);
     border-bottom: 1px solid var(--border);
-    transition: all .4s;
+    transition: background .4s, border-color .4s;
+    max-width: 100vw; overflow: hidden;
   }
+  [data-theme="light"] nav { background: rgba(245,245,247,0.82); }
   .logo {
     font-size: 1.3rem; font-weight: 900; letter-spacing: 0.25em;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+  .nav-right { display: flex; align-items: center; gap: 32px; }
   nav ul { list-style: none; display: flex; gap: 40px; }
   nav ul li a {
     color: var(--muted); text-decoration: none; font-size: .88rem;
@@ -54,14 +109,52 @@
   }
   nav ul li a:hover { color: var(--text); }
   .nav-cta {
-    background: transparent; border: 1px solid var(--accent);
+    background: transparent !important; border: 1px solid var(--accent) !important;
     color: var(--accent) !important; padding: 8px 20px; border-radius: 40px;
     font-size: .82rem !important; letter-spacing: .08em !important;
     transition: all .3s !important;
   }
   .nav-cta:hover { background: var(--accent) !important; color: #000 !important; }
 
-  /* ── HERO ── */
+  /* ══════════════════════════════════════════
+     APPLE REFERENCE BANNER
+  ══════════════════════════════════════════ */
+  .apple-ref-banner {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--surface), var(--surface2));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+  }
+  .apple-ref-inner {
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    flex-wrap: wrap;
+  }
+  .apple-ref-quote {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    font-weight: 700; font-style: italic;
+    letter-spacing: -.01em;
+    background: linear-gradient(135deg, var(--text), var(--muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .apple-ref-divider {
+    width: 1px; height: 36px;
+    background: var(--border);
+  }
+  .apple-ref-sub {
+    font-size: .8rem; color: var(--muted); letter-spacing: .14em;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .apple-ref-sub strong { color: var(--accent); display: block; font-size: .72rem; }
+
+  /* ══════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════ */
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -70,20 +163,18 @@
     position: relative;
     overflow: hidden;
   }
-
-  /* background glow blobs */
   .blob {
     position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none;
   }
   .blob-1 {
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(110,255,213,.13), transparent 70%);
+    background: radial-gradient(circle, var(--blob1-color), transparent 70%);
     top: -100px; left: -150px;
     animation: blobFloat 10s ease-in-out infinite alternate;
   }
   .blob-2 {
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(75,139,255,.1), transparent 70%);
+    background: radial-gradient(circle, var(--blob2-color), transparent 70%);
     bottom: -80px; right: -100px;
     animation: blobFloat 13s ease-in-out infinite alternate-reverse;
   }
@@ -91,16 +182,12 @@
     from { transform: translate(0,0) scale(1); }
     to   { transform: translate(40px, 30px) scale(1.08); }
   }
-
-  /* noise grain */
   .hero::after {
     content: '';
     position: absolute; inset: 0; pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    background-size: 200px;
-    opacity: 0.6;
+    background-size: 200px; opacity: 0.6;
   }
-
   .hero-badge {
     display: inline-flex; align-items: center; gap: 8px;
     background: rgba(110,255,213,.07); border: 1px solid rgba(110,255,213,.2);
@@ -109,35 +196,44 @@
     font-family: 'Space Mono', monospace;
     animation: fadeUp .8s ease both;
   }
+  [data-theme="light"] .hero-badge {
+    background: rgba(0,166,126,.08); border-color: rgba(0,166,126,.25);
+  }
   .badge-dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 8px var(--accent);
     animation: pulse 2s infinite;
   }
-  @keyframes pulse {
-    0%,100% { opacity: 1; } 50% { opacity: .4; }
-  }
-
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
   .hero h1 {
     font-size: clamp(3.5rem, 9vw, 8rem);
     font-weight: 900; line-height: .92;
     letter-spacing: -.03em;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
     animation: fadeUp .9s .1s ease both;
   }
   .hero h1 span {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 60%, #fff 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 60%, var(--text) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
     display: block;
   }
-
+  /* ── SLOGAN ── */
+  .hero-slogan {
+    font-size: clamp(.9rem, 2vw, 1.15rem);
+    font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    font-family: 'Space Mono', monospace;
+    animation: fadeUp .95s .15s ease both;
+    opacity: .85;
+  }
   .hero p {
     max-width: 560px; margin: 0 auto 50px;
     font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
     line-height: 1.7; font-weight: 300;
     animation: fadeUp 1s .2s ease both;
   }
-
   .hero-cta-group {
     display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
     animation: fadeUp 1s .3s ease both;
@@ -147,37 +243,37 @@
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     color: #000; font-weight: 700; font-size: .95rem; letter-spacing: .04em;
     border: none; cursor: pointer;
-    box-shadow: 0 0 40px rgba(110,255,213,.25);
+    box-shadow: 0 0 40px var(--glow);
     transition: transform .25s, box-shadow .25s;
+    font-family: 'Outfit', sans-serif;
   }
-  .btn-primary:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 0 60px rgba(110,255,213,.4);
-  }
+  .btn-primary:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 60px var(--glow); }
   .btn-secondary {
     padding: 16px 40px; border-radius: 50px;
     background: transparent; border: 1px solid var(--border);
     color: var(--text); font-size: .95rem; letter-spacing: .04em;
-    cursor: pointer; transition: border-color .25s, background .25s;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: border-color .25s, background .25s;
   }
-  .btn-secondary:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.04); }
-
+  .btn-secondary:hover { border-color: rgba(128,128,128,.4); background: rgba(128,128,128,.06); }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── DEVICE MOCKUP ── */
+  /* ══════════════════════════════════════════
+     DEVICE MOCKUP
+  ══════════════════════════════════════════ */
   .device-section {
     padding: 40px 40px 120px;
     display: flex; justify-content: center; align-items: center;
-    position: relative;
+    position: relative; overflow: hidden;
   }
   .device-wrap {
     position: relative; width: 340px; height: 340px;
     animation: fadeUp 1s .5s ease both;
+    flex-shrink: 0;
   }
-  /* ring orbits */
   .ring {
     position: absolute; border-radius: 50%; border: 1px solid;
     left: 50%; top: 50%; transform: translate(-50%,-50%);
@@ -186,28 +282,35 @@
   .ring-1 { width: 280px; height: 280px; border-color: rgba(110,255,213,.12); animation-duration: 20s; }
   .ring-2 { width: 340px; height: 340px; border-color: rgba(75,139,255,.08); animation-duration: 35s; animation-direction: reverse; }
   .ring-3 { width: 400px; height: 400px; border-color: rgba(110,255,213,.05); animation-duration: 50s; }
+  [data-theme="light"] .ring-1 { border-color: rgba(0,166,126,.18); }
+  [data-theme="light"] .ring-2 { border-color: rgba(26,86,219,.1); }
+  [data-theme="light"] .ring-3 { border-color: rgba(0,166,126,.08); }
   @keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
-
-  /* the device itself */
   .device-body {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
     width: 160px; height: 160px; border-radius: 32px;
-    background: linear-gradient(145deg, #1a1a24 0%, #0d0d14 60%, #0a1520 100%);
+    background: var(--device-bg);
     border: 1px solid rgba(255,255,255,.12);
     box-shadow:
       0 0 0 1px rgba(110,255,213,.08),
       0 0 60px rgba(110,255,213,.1),
-      0 30px 80px rgba(0,0,0,.6),
+      0 30px 80px var(--shadow),
       inset 0 1px 0 rgba(255,255,255,.12);
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    transition: background .4s;
+  }
+  [data-theme="light"] .device-body {
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 0 0 1px rgba(0,166,126,.08), 0 0 40px rgba(0,166,126,.08), 0 20px 60px var(--shadow), inset 0 1px 0 rgba(255,255,255,.8);
   }
   .device-screen {
     width: 90px; height: 55px; border-radius: 10px;
-    background: linear-gradient(135deg, #080b14, #0d1520);
+    background: var(--device-screen-bg);
     border: 1px solid rgba(110,255,213,.2);
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden; position: relative;
+    overflow: hidden;
   }
+  [data-theme="light"] .device-screen { border-color: rgba(0,166,126,.3); }
   .device-screen-inner {
     font-family: 'Space Mono', monospace;
     font-size: .55rem; color: var(--accent);
@@ -221,10 +324,10 @@
     border: 1px solid rgba(255,255,255,.1);
     cursor: pointer; transition: all .2s;
   }
+  [data-theme="light"] .dev-btn { background: linear-gradient(135deg,#d0d4e0,#c4c8d8); border-color: rgba(0,0,0,.12); }
   .dev-btn.go { border-color: rgba(110,255,213,.4); box-shadow: 0 0 8px rgba(110,255,213,.2); }
+  [data-theme="light"] .dev-btn.go { border-color: rgba(0,166,126,.5); box-shadow: 0 0 8px rgba(0,166,126,.2); }
   .dev-btn.sos { border-color: rgba(255,100,100,.3); }
-
-  /* dot on ring */
   .ring-dot {
     position: absolute; width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 12px var(--accent);
@@ -240,7 +343,9 @@
     animation: spin 35s linear infinite reverse;
   }
 
-  /* ── SECTION BASE ── */
+  /* ══════════════════════════════════════════
+     SECTION BASE
+  ══════════════════════════════════════════ */
   section { padding: 100px 60px; }
   .section-label {
     font-family: 'Space Mono', monospace; font-size: .7rem;
@@ -250,44 +355,58 @@
   .section-title {
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 800; line-height: 1.08; letter-spacing: -.025em;
-    margin-bottom: 20px;
+    margin-bottom: 20px; color: var(--text);
   }
   .section-sub {
     color: var(--muted); font-size: 1.05rem; line-height: 1.7;
     max-width: 520px; margin-bottom: 60px;
   }
 
-  /* ── FEATURES ── */
-  .features { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  /* ══════════════════════════════════════════
+     FEATURES
+  ══════════════════════════════════════════ */
+  .features {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
   .features-inner { max-width: 1100px; margin: 0 auto; }
   .features-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2px; border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
-    background: var(--border);
+    gap: 2px; border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; background: var(--border);
   }
   .feat-card {
     background: var(--surface); padding: 44px 36px;
     display: flex; flex-direction: column; gap: 16px;
-    transition: background .3s;
-    position: relative; overflow: hidden;
+    transition: background .3s; position: relative; overflow: hidden;
   }
   .feat-card::before {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(110,255,213,.04), transparent);
     opacity: 0; transition: opacity .3s;
   }
+  [data-theme="light"] .feat-card::before {
+    background: linear-gradient(135deg, rgba(0,166,126,.04), transparent);
+  }
   .feat-card:hover::before { opacity: 1; }
   .feat-icon {
     width: 48px; height: 48px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem;
+    display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
     background: linear-gradient(135deg, rgba(110,255,213,.12), rgba(75,139,255,.08));
     border: 1px solid rgba(110,255,213,.15);
+    transition: background .4s, border-color .4s;
   }
-  .feat-card h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -.01em; }
+  [data-theme="light"] .feat-icon {
+    background: linear-gradient(135deg, rgba(0,166,126,.1), rgba(26,86,219,.06));
+    border-color: rgba(0,166,126,.2);
+  }
+  .feat-card h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -.01em; color: var(--text); }
   .feat-card p { font-size: .9rem; color: var(--muted); line-height: 1.65; }
 
-  /* ── POMODORO ── */
+  /* ══════════════════════════════════════════
+     POMODORO
+  ══════════════════════════════════════════ */
   .pomodoro-section { max-width: 1100px; margin: 0 auto; }
   .pom-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
   .pom-visual {
@@ -300,6 +419,7 @@
     display: flex; align-items: center; justify-content: center;
     position: relative;
   }
+  [data-theme="light"] .pom-ring-outer { border-color: rgba(0,166,126,.2); }
   .pom-ring-inner {
     width: 220px; height: 220px; border-radius: 50%;
     border: 2px solid rgba(75,139,255,.15);
@@ -307,14 +427,17 @@
     flex-direction: column; gap: 6px;
     background: radial-gradient(circle, rgba(110,255,213,.04), transparent);
   }
+  [data-theme="light"] .pom-ring-inner {
+    border-color: rgba(26,86,219,.15);
+    background: radial-gradient(circle, rgba(0,166,126,.04), transparent);
+  }
   .pom-time {
     font-family: 'Space Mono', monospace;
     font-size: 2.8rem; font-weight: 700; color: var(--accent);
     letter-spacing: -.02em;
-    text-shadow: 0 0 30px rgba(110,255,213,.5);
+    text-shadow: 0 0 30px var(--glow);
   }
   .pom-label-ring { font-size: .75rem; color: var(--muted); letter-spacing: .1em; }
-  /* animated arc */
   .pom-svg {
     position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 280px; height: 280px;
@@ -322,9 +445,10 @@
   .pom-arc {
     fill: none; stroke: url(#arcGrad); stroke-width: 3;
     stroke-linecap: round;
-    stroke-dasharray: 754; stroke-dashoffset: 188;
+    stroke-dasharray: 754; stroke-dashoffset: 0;
     transform-origin: center; transform: rotate(-90deg);
     filter: drop-shadow(0 0 6px rgba(110,255,213,.6));
+    transition: stroke-dashoffset .9s linear;
   }
   .pom-steps { display: flex; flex-direction: column; gap: 24px; }
   .pom-step {
@@ -334,69 +458,83 @@
     background: rgba(255,255,255,.015);
     transition: border-color .3s, background .3s;
   }
+  [data-theme="light"] .pom-step { background: rgba(0,0,0,.015); }
   .pom-step:hover { border-color: rgba(110,255,213,.2); background: rgba(110,255,213,.03); }
-  .pom-num {
-    font-family: 'Space Mono', monospace; font-size: 1.2rem;
-    font-weight: 700; color: var(--accent); min-width: 32px;
-  }
-  .pom-step h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  [data-theme="light"] .pom-step:hover { border-color: rgba(0,166,126,.25); background: rgba(0,166,126,.03); }
+  .pom-num { font-family: 'Space Mono', monospace; font-size: 1.2rem; font-weight: 700; color: var(--accent); min-width: 32px; }
+  .pom-step h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
   .pom-step p { font-size: .88rem; color: var(--muted); line-height: 1.6; }
 
-  /* ── APP ── */
-  .app-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  /* ══════════════════════════════════════════
+     APP
+  ══════════════════════════════════════════ */
+  .app-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
   .app-inner { max-width: 1100px; margin: 0 auto; }
   .app-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
   .app-phone {
     width: 240px; height: 480px; border-radius: 36px; margin: 0 auto;
-    background: linear-gradient(145deg, #12121c, #0a0a12);
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(110,255,213,.06), inset 0 1px 0 rgba(255,255,255,.1);
+    background: var(--phone-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 40px 100px var(--shadow), 0 0 0 1px rgba(110,255,213,.06), inset 0 1px 0 rgba(255,255,255,.1);
     overflow: hidden; position: relative; display: flex; flex-direction: column;
+    transition: background .4s;
+  }
+  [data-theme="light"] .app-phone {
+    box-shadow: 0 24px 60px var(--shadow), 0 0 0 1px rgba(0,166,126,.07), inset 0 1px 0 rgba(255,255,255,.9);
   }
   .phone-notch {
-    width: 80px; height: 22px; background: #050507; border-radius: 0 0 16px 16px;
-    margin: 0 auto; flex-shrink: 0;
+    width: 80px; height: 22px; background: var(--bg); border-radius: 0 0 16px 16px;
+    margin: 0 auto; flex-shrink: 0; transition: background .4s;
   }
   .phone-content { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
   .phone-header { display: flex; justify-content: space-between; align-items: center; }
-  .phone-title { font-size: .85rem; font-weight: 700; letter-spacing: -.01em; }
+  .phone-title { font-size: .85rem; font-weight: 700; letter-spacing: -.01em; color: var(--text); }
   .xp-badge {
     font-family: 'Space Mono', monospace; font-size: .6rem;
     color: var(--accent); background: rgba(110,255,213,.1);
     border: 1px solid rgba(110,255,213,.2); padding: 3px 8px; border-radius: 20px;
   }
-  .xp-bar-wrap { background: rgba(255,255,255,.06); border-radius: 8px; height: 6px; overflow: hidden; }
+  [data-theme="light"] .xp-badge { background: rgba(0,166,126,.1); border-color: rgba(0,166,126,.25); }
+  .xp-bar-wrap { background: rgba(128,128,128,.1); border-radius: 8px; height: 6px; overflow: hidden; }
   .xp-bar { height: 100%; width: 67%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 8px; }
   .phone-session {
     background: linear-gradient(135deg, rgba(110,255,213,.08), rgba(75,139,255,.06));
-    border: 1px solid rgba(110,255,213,.15); border-radius: 16px; padding: 16px;
-    text-align: center;
+    border: 1px solid rgba(110,255,213,.15); border-radius: 16px; padding: 16px; text-align: center;
+  }
+  [data-theme="light"] .phone-session {
+    background: linear-gradient(135deg, rgba(0,166,126,.06), rgba(26,86,219,.04));
+    border-color: rgba(0,166,126,.2);
   }
   .session-timer { font-family: 'Space Mono', monospace; font-size: 2rem; color: var(--accent); font-weight: 700; }
   .session-label { font-size: .65rem; color: var(--muted); letter-spacing: .08em; }
   .stat-row { display: flex; gap: 8px; }
   .stat-card {
-    flex: 1; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    flex: 1; background: rgba(128,128,128,.06); border: 1px solid var(--border);
     border-radius: 12px; padding: 10px; text-align: center;
   }
   .stat-num { font-family: 'Space Mono', monospace; font-size: .9rem; color: var(--text); font-weight: 700; }
   .stat-lbl { font-size: .6rem; color: var(--muted); letter-spacing: .06em; }
   .leaderboard { display: flex; flex-direction: column; gap: 6px; }
-  .lb-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.03); }
+  .lb-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; background: rgba(128,128,128,.04); }
   .lb-rank { font-family: 'Space Mono', monospace; font-size: .65rem; color: var(--muted); width: 16px; }
   .lb-avatar { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
-  .lb-name { font-size: .72rem; flex: 1; }
+  .lb-name { font-size: .72rem; flex: 1; color: var(--text); }
   .lb-xp { font-family: 'Space Mono', monospace; font-size: .65rem; color: var(--accent); }
   .lb-row:first-child { background: rgba(110,255,213,.07); border: 1px solid rgba(110,255,213,.12); }
-
+  [data-theme="light"] .lb-row:first-child { background: rgba(0,166,126,.07); border-color: rgba(0,166,126,.15); }
   .app-text-content { display: flex; flex-direction: column; gap: 32px; }
   .plan-cards { display: flex; flex-direction: column; gap: 16px; }
   .plan-card {
     border: 1px solid var(--border); border-radius: 16px; padding: 24px;
-    position: relative; transition: border-color .3s;
+    position: relative; transition: border-color .3s; background: transparent;
   }
   .plan-card.premium { border-color: rgba(110,255,213,.25); background: rgba(110,255,213,.03); }
-  .plan-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  [data-theme="light"] .plan-card.premium { border-color: rgba(0,166,126,.3); background: rgba(0,166,126,.03); }
+  .plan-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
   .plan-price { font-family: 'Space Mono', monospace; font-size: .85rem; color: var(--accent); margin-bottom: 12px; }
   .plan-features { display: flex; flex-direction: column; gap: 6px; }
   .plan-feat { font-size: .82rem; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
@@ -408,38 +546,49 @@
     padding: 3px 10px; border-radius: 20px; font-weight: 700;
   }
 
-  /* ── PRICING ── */
+  /* ══════════════════════════════════════════
+     PRICING
+  ══════════════════════════════════════════ */
   .pricing-section { max-width: 900px; margin: 0 auto; text-align: center; }
   .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px; }
   .price-card {
     border: 1px solid var(--border); border-radius: 24px; padding: 48px 36px;
-    text-align: left; position: relative; overflow: hidden; transition: transform .3s;
+    text-align: left; position: relative; overflow: hidden;
+    transition: transform .3s, background .4s, border-color .4s;
+    background: transparent;
   }
   .price-card:hover { transform: translateY(-4px); }
   .price-card.main {
     background: linear-gradient(135deg, rgba(110,255,213,.06), rgba(75,139,255,.04));
     border-color: rgba(110,255,213,.25);
   }
+  [data-theme="light"] .price-card.main {
+    background: linear-gradient(135deg, rgba(0,166,126,.05), rgba(26,86,219,.03));
+    border-color: rgba(0,166,126,.3);
+  }
   .price-card.main::before {
     content: ''; position: absolute; top: -80px; right: -80px;
     width: 200px; height: 200px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(110,255,213,.12), transparent);
+    background: radial-gradient(circle, var(--glow), transparent);
     pointer-events: none;
   }
-  .price-tag { font-family: 'Space Mono', monospace; font-size: 3rem; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+  .price-tag { font-family: 'Space Mono', monospace; font-size: 3rem; font-weight: 700; line-height: 1; margin-bottom: 6px; color: var(--text); }
   .price-tag span { font-size: 1rem; color: var(--muted); }
   .price-desc { font-size: .88rem; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
   .price-list { display: flex; flex-direction: column; gap: 10px; }
-  .price-item { font-size: .88rem; display: flex; gap: 10px; align-items: flex-start; }
+  .price-item { font-size: .88rem; display: flex; gap: 10px; align-items: flex-start; color: var(--text); }
   .price-item::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
-  .price-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .price-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
   .coming-badge {
     display: inline-block; font-size: .7rem; letter-spacing: .1em;
     color: var(--accent); border: 1px solid rgba(110,255,213,.3);
     padding: 3px 12px; border-radius: 20px; margin-bottom: 24px;
   }
+  [data-theme="light"] .coming-badge { border-color: rgba(0,166,126,.35); }
 
-  /* ── ABOUT ── */
+  /* ══════════════════════════════════════════
+     ABOUT / NOTIFY
+  ══════════════════════════════════════════ */
   .about-section {
     max-width: 700px; margin: 0 auto; text-align: center; padding: 100px 40px;
   }
@@ -448,42 +597,57 @@
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     display: flex; align-items: center; justify-content: center;
     font-size: 2rem; font-weight: 900; color: #000;
-    box-shadow: 0 0 40px rgba(110,255,213,.3);
+    box-shadow: 0 0 40px var(--glow);
   }
   .about-section p { color: var(--muted); font-size: 1.05rem; line-height: 1.8; margin-bottom: 16px; }
   .about-section strong { color: var(--text); }
+  #emailInput {
+    background: rgba(128,128,128,.07); border: 1px solid var(--border);
+    color: var(--text); padding: 14px 24px; border-radius: 50px; font-size: .95rem;
+    font-family: 'Outfit', sans-serif; outline: none; width: 260px;
+    transition: border-color .25s, background .4s;
+  }
 
-  /* ── FOOTER ── */
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
   footer {
     border-top: 1px solid var(--border); padding: 40px 60px;
     display: flex; justify-content: space-between; align-items: center;
     color: var(--muted); font-size: .82rem;
+    background: var(--bg); transition: background .4s;
   }
   .footer-logo {
     font-weight: 900; font-size: 1rem; letter-spacing: .2em;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  /* ── SCROLL REVEAL ── */
+  /* ══════════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════════ */
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ── RESPONSIVE ── */
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════ */
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
     nav ul { display: none; }
     section { padding: 70px 24px; }
     .pom-layout, .app-layout { grid-template-columns: 1fr; gap: 48px; }
     .pricing-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 32px 24px; }
+    .apple-ref-divider { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
+<!-- ══ NAV ══ -->
+<nav id="mainNav">
   <div class="logo">NEUROX</div>
   <ul>
     <li><a href="#features">Fonctions</a></li>
@@ -493,9 +657,12 @@
     <li><a href="#about">Le projet</a></li>
     <li><a href="#notify" class="nav-cta">Être notifié</a></li>
   </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeBtn" title="Changer le thème" aria-label="Changer le thème">☀️</button>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section class="hero">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
@@ -509,6 +676,9 @@
     Focus.<br>
     <span>Redéfini.</span>
   </h1>
+
+  <div class="hero-slogan">Start. Build. Succeed.</div>
+
   <p>
     NEUROX est le compagnon de concentration qui transforme chaque session de travail en une expérience immersive, motivante et mesurable.
   </p>
@@ -518,7 +688,21 @@
   </div>
 </section>
 
-<!-- DEVICE MOCKUP -->
+<!-- ══ APPLE REFERENCE BANNER ══ -->
+<div class="apple-ref-banner">
+  <div class="apple-ref-inner">
+    <div class="apple-ref-quote">"Think Different."</div>
+    <div class="apple-ref-divider"></div>
+    <div class="apple-ref-sub">
+      Une phrase, une vision. Celle de Steve Jobs en 1997.
+      <strong>Celle de NEUROX aujourd'hui.</strong>
+    </div>
+    <div class="apple-ref-divider"></div>
+    <div class="apple-ref-quote" style="font-size:clamp(.9rem,2vw,1.3rem)">Focus Different.</div>
+  </div>
+</div>
+
+<!-- ══ DEVICE MOCKUP ══ -->
 <div class="device-section">
   <div class="device-wrap">
     <div class="ring ring-1"></div>
@@ -529,7 +713,7 @@
     <div class="device-body">
       <div class="device-screen">
         <div class="device-screen-inner">
-          <div class="timer-text" id="heroTimer">25:00</div>
+          <div class="timer-text js-timer">25:00</div>
           <div>FOCUS</div>
         </div>
       </div>
@@ -542,7 +726,7 @@
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- ══ FEATURES ══ -->
 <section class="features" id="features">
   <div class="features-inner">
     <div class="reveal">
@@ -585,7 +769,7 @@
   </div>
 </section>
 
-<!-- POMODORO -->
+<!-- ══ POMODORO ══ -->
 <section id="pomodoro">
   <div class="pomodoro-section">
     <div class="pom-layout">
@@ -602,7 +786,7 @@
             <circle class="pom-arc" cx="140" cy="140" r="120"/>
           </svg>
           <div class="pom-ring-inner">
-            <div class="pom-time" id="pomTimer">25:00</div>
+            <div class="pom-time js-timer">25:00</div>
             <div class="pom-label-ring">SESSION FOCUS</div>
           </div>
         </div>
@@ -635,7 +819,7 @@
           <div class="pom-num">04</div>
           <div>
             <h4>Répète & progresse</h4>
-            <p>Enchaîne les sessions, débloques des badges, personnalise les durées selon ton rythme.</p>
+            <p>Enchaîne les sessions, débloque des badges, personnalise les durées selon ton rythme.</p>
           </div>
         </div>
       </div>
@@ -643,7 +827,7 @@
   </div>
 </section>
 
-<!-- APP -->
+<!-- ══ APP ══ -->
 <section class="app-section" id="app">
   <div class="app-inner">
     <div class="app-layout">
@@ -660,7 +844,7 @@
               <div class="xp-bar-wrap"><div class="xp-bar"></div></div>
             </div>
             <div class="phone-session">
-              <div class="session-timer" id="appTimer">24:37</div>
+              <div class="session-timer js-timer">25:00</div>
               <div class="session-label">SESSION EN COURS · POMODORO #3</div>
             </div>
             <div class="stat-row">
@@ -693,8 +877,8 @@
               </div>
               <div class="lb-row" style="border-color:rgba(110,255,213,.15);">
                 <div class="lb-rank" style="color:var(--accent)">03</div>
-                <div class="lb-avatar" style="background:linear-gradient(135deg,#fff,#aaa)"></div>
-                <div class="lb-name" style="color:var(--text);font-weight:600">Toi</div>
+                <div class="lb-avatar" style="background:linear-gradient(135deg,#aaa,#888)"></div>
+                <div class="lb-name" style="font-weight:600">Toi</div>
                 <div class="lb-xp">2 340 XP</div>
               </div>
             </div>
@@ -735,7 +919,7 @@
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- ══ PRICING ══ -->
 <section id="pricing">
   <div class="pricing-section">
     <div class="reveal">
@@ -773,9 +957,9 @@
   </div>
 </section>
 
-<!-- ABOUT / NOTIFY -->
+<!-- ══ ABOUT / NOTIFY ══ -->
 <section id="notify" style="background:var(--surface);border-top:1px solid var(--border)">
-  <div class="about-section reveal">
+  <div class="about-section reveal" id="about">
     <div class="about-avatar">I</div>
     <div class="section-label" style="text-align:center">Le projet</div>
     <div class="section-title" style="font-size:2rem;text-align:center;margin-bottom:24px">Créé par Ivan, 14 ans.</div>
@@ -783,69 +967,128 @@
     <p>Le prototype est en cours de modélisation sur SOLIDWORKS, et sera imprimé en 3D au FABLAB de Dassault Systèmes. Les premiers tests utilisateurs démarrent bientôt.</p>
     <p style="margin-bottom:40px">Tu veux être parmi les premiers à tester NEUROX ? Laisse ton email et je te préviens dès que c'est prêt.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <input type="email" placeholder="your@mail.com" id="emailInput" style="
-        background:rgba(255,255,255,.05); border:1px solid var(--border);
-        color:var(--text); padding:14px 24px; border-radius:50px; font-size:.95rem;
-        font-family:'Outfit',sans-serif; outline:none; width:260px;
-        transition:border-color .25s;
-      " onfocus="this.style.borderColor='rgba(110,255,213,.4)'" onblur="this.style.borderColor='var(--border)'">
+      <input type="email" placeholder="ton@email.com" id="emailInput"
+        onfocus="this.style.borderColor='rgba(110,255,213,.4)'"
+        onblur="this.style.borderColor='var(--border)'">
       <button class="btn-primary" onclick="handleNotify()">Me notifier au lancement</button>
     </div>
     <div id="notifyMsg" style="margin-top:16px;font-size:.88rem;color:var(--accent);min-height:20px"></div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-logo">NEUROX</div>
   <div>Projet en cours de prototypage · Conçu par Ivan · 2025</div>
-  <div style="color:var(--muted)">Atteint tes objectifs !</div>
+  <div style="color:var(--muted)">Atteins tes objectifs. 🎯</div>
 </footer>
 
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
 <script>
-// ── TIMER ANIMATION ──
-function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
-let secs = 25*60;
-const heroT = document.getElementById('heroTimer');
-const pomT  = document.getElementById('pomTimer');
-const appT  = document.getElementById('appTimer');
-setInterval(()=>{
-  secs = secs > 0 ? secs-1 : 25*60;
-  const t = fmt(secs);
-  if(heroT) heroT.textContent = t;
-  if(pomT)  pomT.textContent  = t;
-  // app timer counts up slightly offset
-  const s2 = (secs + 83) % (25*60);
-  if(appT)  appT.textContent  = fmt(s2);
-  // update arc
-  const arc = document.querySelector('.pom-arc');
-  if(arc){
-    const pct = 1 - secs/(25*60);
-    arc.style.strokeDashoffset = 754 - 754*pct;
-  }
-}, 1000);
+/* ─────────────────────────────────────
+   THEME TOGGLE
+───────────────────────────────────── */
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+let isDark = true;
 
-// ── SCROLL REVEAL ──
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-},{ threshold: 0.12 });
-reveals.forEach(r=>io.observe(r));
-
-// ── NOTIFY ──
-function handleNotify(){
-  const v = document.getElementById('emailInput').value.trim();
-  const msg = document.getElementById('notifyMsg');
-  if(!v || !v.includes('@')){ msg.style.color='#ff6b6b'; msg.textContent='Entre un email valide 👀'; return; }
-  msg.style.color='var(--accent)';
-  msg.textContent = '✓ Super ! Tu seras parmi les premiers à découvrir NEUROX 🎉';
-  document.getElementById('emailInput').value='';
+function applyTheme(dark) {
+  html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '☀️' : '🌙';
+  // update nav bg based on scroll + theme
+  updateNavBg();
 }
 
-// ── NAV SCROLL EFFECT ──
-window.addEventListener('scroll',()=>{
-  document.querySelector('nav').style.background = window.scrollY > 40 ? 'rgba(5,5,7,0.92)' : 'rgba(5,5,7,0.7)';
+themeBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  applyTheme(isDark);
 });
+
+function updateNavBg() {
+  const nav = document.getElementById('mainNav');
+  if (isDark) {
+    nav.style.background = window.scrollY > 40 ? 'rgba(5,5,7,0.92)' : 'rgba(5,5,7,0.7)';
+  } else {
+    nav.style.background = window.scrollY > 40 ? 'rgba(245,245,247,0.96)' : 'rgba(245,245,247,0.82)';
+  }
+}
+
+window.addEventListener('scroll', updateNavBg, { passive: true });
+
+/* ─────────────────────────────────────
+   SYNCED TIMER — all .js-timer elements
+   start at 25:00, countdown together,
+   loop back to 25:00 automatically
+───────────────────────────────────── */
+const POMODORO = 25 * 60; // seconds
+let timerSecs  = POMODORO;
+const timerEls = document.querySelectorAll('.js-timer');
+const arcEl    = document.querySelector('.pom-arc');
+const ARC_LEN  = 754; // circumference at r=120
+
+function fmt(s) {
+  return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+}
+
+function updateTimers() {
+  const text = fmt(timerSecs);
+  timerEls.forEach(el => { el.textContent = text; });
+
+  // arc: full at 25:00, empty at 0:00
+  if (arcEl) {
+    const pct = timerSecs / POMODORO; // 1 → 0
+    arcEl.style.strokeDashoffset = ARC_LEN * (1 - pct);
+  }
+
+  timerSecs--;
+  if (timerSecs < 0) { timerSecs = POMODORO; } // loop back
+}
+
+updateTimers(); // paint immediately, no 1-second delay on load
+setInterval(updateTimers, 1000);
+
+/* ─────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────── */
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(r => observer.observe(r));
+
+/* ─────────────────────────────────────
+   EMAIL NOTIFY
+   Note : les emails s'affichent ici en
+   local (console) — pour les collecter
+   vraiment, connecte un service comme
+   Mailchimp, Brevo (ex-Sendinblue) ou
+   Google Forms (gratuits !).
+───────────────────────────────────── */
+const collected = [];
+
+function handleNotify() {
+  const input = document.getElementById('emailInput');
+  const v     = input.value.trim();
+  const msg   = document.getElementById('notifyMsg');
+
+  if (!v || !v.includes('@')) {
+    msg.style.color = '#ff6b6b';
+    msg.textContent = 'Entre un email valide 👀';
+    return;
+  }
+
+  collected.push(v);
+  console.log('📧 Emails collectés :', collected); // visible dans la console du navigateur
+
+  msg.style.color = 'var(--accent)';
+  msg.textContent = '✓ Super ! Tu seras parmi les premiers à découvrir NEUROX 🎉';
+  input.value = '';
+}
 </script>
+
 </body>
 </html>
