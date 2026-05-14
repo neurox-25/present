@@ -1061,16 +1061,15 @@ const observer  = new IntersectionObserver((entries) => {
 revealEls.forEach(r => observer.observe(r));
 
 /* ─────────────────────────────────────
-   EMAIL NOTIFY
-   Note : les emails s'affichent ici en
-   local (console) — pour les collecter
-   vraiment, connecte un service comme
-   Mailchimp, Brevo (ex-Sendinblue) ou
-   Google Forms (gratuits !).
+   SUPABASE CONFIG
 ───────────────────────────────────── */
-const collected = [];
+const SUPABASE_URL = 'https://ppoqevwlmngxwuhnuipd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwb3FldndsbW5neHd1aG51aXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzUxNTcsImV4cCI6MjA5NDM1MTE1N30.QJcHpmwWqoBXBlvAg3azAWl0jGUyQIiVmRviyBYFHD4';
 
-function handleNotify() {
+/* ─────────────────────────────────────
+   EMAIL NOTIFY → Supabase waitlist
+───────────────────────────────────── */
+async function handleNotify() {
   const input = document.getElementById('emailInput');
   const v     = input.value.trim();
   const msg   = document.getElementById('notifyMsg');
@@ -1081,12 +1080,50 @@ function handleNotify() {
     return;
   }
 
-  collected.push(v);
-  console.log('📧 Emails collectés :', collected); // visible dans la console du navigateur
+  // Disable button while sending
+  const btn = document.querySelector('#notify .btn-primary');
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+  msg.style.color = 'var(--muted)';
+  msg.textContent = '';
 
-  msg.style.color = 'var(--accent)';
-  msg.textContent = '✓ Super ! Tu seras parmi les premiers à découvrir NEUROX 🎉';
-  input.value = '';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'apikey':        SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer':        'return=minimal'
+      },
+      body: JSON.stringify({
+        email:     v,
+        createdAt: new Date().toISOString()   // ← ta colonne timestamp
+      })
+    });
+
+    if (res.ok || res.status === 201) {
+      msg.style.color = 'var(--accent)';
+      msg.textContent = '✓ Super ! Tu seras parmi les premiers à découvrir NEUROX 🎉';
+      input.value = '';
+    } else {
+      const err = await res.json().catch(() => ({}));
+      // code 23505 = email déjà en base (UNIQUE constraint)
+      if (err.code === '23505') {
+        msg.style.color = 'var(--accent)';
+        msg.textContent = 'Tu es déjà sur la liste ! On te contacte dès que c\'est prêt 😉';
+      } else {
+        msg.style.color = '#ff6b6b';
+        msg.textContent = 'Erreur ' + (err.message || res.status) + ' — réessaie dans un instant.';
+      }
+    }
+  } catch (e) {
+    msg.style.color = '#ff6b6b';
+    msg.textContent = 'Connexion impossible. Vérifie ta connexion et réessaie.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Me notifier au lancement';
+  }
 }
 </script>
 
