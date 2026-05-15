@@ -618,7 +618,7 @@ document.querySelectorAll(REVEAL_SEL).forEach(el => revObs.observe(el));
 let currentCount = 0;
 async function fetchWaitlistCount() {
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=id`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=email`, {
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`,
