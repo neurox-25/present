@@ -5,470 +5,222 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEUROX — Les grandes choses poussent lentement.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { overflow-x: hidden; scroll-behavior: smooth; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:#04080a;color:#e8f0e0;font-family:'Lato',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#04080a}
+::-webkit-scrollbar-thumb{background:#3a6b2a;border-radius:3px}
 
-body {
-  background: #04080a;
-  color: #e8f0e0;
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
+/* ── CURSOR ── */
+.cursor{width:12px;height:12px;border-radius:50%;background:#7ecb6a;position:fixed;top:0;left:0;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:transform .12s ease;mix-blend-mode:screen}
+.cursor-ring{width:36px;height:36px;border-radius:50%;border:1px solid rgba(126,203,106,.4);position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:transform .28s ease}
 
-/* ── CUSTOM CURSOR ── */
-.cursor {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: #7ecb6a;
-  position: fixed; top: 0; left: 0; z-index: 9999;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: transform .12s ease, width .3s, height .3s, opacity .3s;
-  mix-blend-mode: screen;
-}
-.cursor-ring {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1px solid rgba(126,203,106,.4);
-  position: fixed; top: 0; left: 0; z-index: 9998;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: transform .3s ease, width .3s, height .3s;
-}
-body:has(button:hover) .cursor { transform: translate(-50%,-50%) scale(2.5); }
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:24px 56px;transition:background .5s,padding .4s}
+nav.solid{background:rgba(4,8,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(126,203,106,.08);padding:16px 56px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:.04em;color:#b8e8a0;display:flex;align-items:center;gap:10px}
+.nav-logo-icon{animation:leafSway 4s ease-in-out infinite;display:inline-block}
+@keyframes leafSway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+nav ul{list-style:none;display:flex;gap:36px;align-items:center}
+nav ul a{color:rgba(232,240,224,.45);text-decoration:none;font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.1em;transition:color .3s}
+nav ul a:hover{color:#b8e8a0}
+.nav-right{display:flex;align-items:center;gap:12px}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #04080a; }
-::-webkit-scrollbar-thumb { background: #3a6b2a; border-radius: 3px; }
+/* language selector */
+.lang-selector{position:relative}
+.lang-btn{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;padding:7px 14px;border-radius:50px;border:1px solid rgba(126,203,106,.3);color:rgba(232,240,224,.6);background:transparent;cursor:none;transition:all .3s;display:flex;align-items:center;gap:6px}
+.lang-btn:hover{border-color:rgba(126,203,106,.6);color:#b8e8a0}
+.lang-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:rgba(8,16,8,.96);border:1px solid rgba(126,203,106,.15);border-radius:14px;padding:8px;min-width:150px;display:none;flex-direction:column;gap:2px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lang-dropdown.open{display:flex}
+.lang-option{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.07em;color:rgba(232,240,224,.55);padding:9px 14px;border-radius:8px;cursor:none;transition:all .2s;display:flex;align-items:center;gap:10px;border:none;background:none;width:100%;text-align:left}
+.lang-option:hover{background:rgba(126,203,106,.08);color:#b8e8a0}
+.lang-option.active{color:#7ecb6a;background:rgba(126,203,106,.1)}
+.lang-flag{font-size:1rem}
 
-/* ══════════════════════════════════════════════════════
-   NAV
-══════════════════════════════════════════════════════ */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 24px 56px;
-  transition: background .5s, padding .4s, backdrop-filter .5s;
-}
-nav.solid {
-  background: rgba(4,8,10,.88);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(126,203,106,.08);
-  padding: 16px 56px;
-}
-.nav-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem; font-weight: 700; letter-spacing: .04em;
-  color: #b8e8a0;
-  display: flex; align-items: center; gap: 10px;
-}
-.nav-logo-icon { animation: leafSway 4s ease-in-out infinite; display: inline-block; }
-@keyframes leafSway { 0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)} }
+.nav-cta{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;padding:9px 24px;border-radius:50px;border:1px solid rgba(126,203,106,.5);color:#7ecb6a;background:transparent;cursor:none;transition:all .3s}
+.nav-cta:hover{background:#7ecb6a;color:#020504;border-color:#7ecb6a}
 
-nav ul { list-style: none; display: flex; gap: 40px; }
-nav ul a { color: rgba(232,240,224,.45); text-decoration: none; font-family: 'DM Mono', monospace; font-size: .75rem; letter-spacing: .1em; transition: color .3s; }
-nav ul a:hover { color: #b8e8a0; }
-.nav-cta {
-  font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .1em;
-  padding: 9px 24px; border-radius: 50px;
-  border: 1px solid rgba(126,203,106,.5); color: #7ecb6a;
-  background: transparent; cursor: none; transition: all .3s;
-}
-.nav-cta:hover { background: #7ecb6a; color: #020504; border-color: #7ecb6a; }
+/* ── CANVAS ── */
+#plantCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
-/* ══════════════════════════════════════════════════════
-   THE MAIN PLANT CANVAS — spans the entire page height
-══════════════════════════════════════════════════════ */
-#plantCanvas {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
+/* ── PAGE ── */
+.page{position:relative;z-index:1}
 
-/* ══════════════════════════════════════════════════════
-   PAGE WRAPPER
-══════════════════════════════════════════════════════ */
-.page {
-  position: relative; z-index: 1;
-}
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px;position:relative}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,rgba(4,8,10,.9),transparent);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(126,203,106,.2);background:rgba(126,203,106,.06);border-radius:50px;padding:6px 18px;margin-bottom:40px;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.14em;color:#7ecb6a;animation:fadeUp .8s ease both}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:#7ecb6a;box-shadow:0 0 8px #7ecb6a;animation:glow 2s infinite;flex-shrink:0}
+@keyframes glow{0%,100%{opacity:1;box-shadow:0 0 8px #7ecb6a}50%{opacity:.4;box-shadow:0 0 3px #7ecb6a}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,9vw,9rem);font-weight:900;line-height:.88;letter-spacing:-.03em;margin-bottom:12px;animation:fadeUp .9s .1s ease both}
+.hero-title .line1{display:block;color:#e8f0e0}
+.hero-title .line2{display:block;font-style:italic;font-weight:400;background:linear-gradient(135deg,#7ecb6a,#b8e8a0,#4a9a38);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-tagline{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:clamp(1rem,2.5vw,1.6rem);color:rgba(232,240,224,.5);margin-bottom:56px;animation:fadeUp 1s .25s ease both}
+.counter-block{display:inline-flex;align-items:center;gap:20px;border:1px solid rgba(126,203,106,.15);background:rgba(4,10,4,.6);backdrop-filter:blur(12px);border-radius:16px;padding:18px 32px;margin-bottom:44px;animation:fadeUp 1s .4s ease both}
+.counter-num-wrap{text-align:center}
+.counter-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:#b8e8a0;line-height:1;display:block}
+.counter-sub{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:rgba(232,240,224,.4);text-transform:uppercase;margin-top:4px;display:block}
+.counter-divider{width:1px;height:44px;background:rgba(126,203,106,.12)}
+.counter-right{display:flex;flex-direction:column;gap:6px}
+.counter-stat{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(232,240,224,.45);letter-spacing:.05em}
+.cs-dot{width:6px;height:6px;border-radius:50%;background:#7ecb6a;box-shadow:0 0 6px #7ecb6a;animation:glow 2s infinite;flex-shrink:0}
+.cs-dot.amber{background:#c4a03a;box-shadow:0 0 6px #c4a03a;animation-delay:.8s}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp 1s .55s ease both}
+.btn-grow{padding:16px 40px;border-radius:50px;background:linear-gradient(135deg,#4a9a38,#7ecb6a,#b8e8a0);color:#020a02;font-weight:700;font-size:.9rem;letter-spacing:.06em;border:none;cursor:none;font-family:'Lato',sans-serif;box-shadow:0 0 60px rgba(126,203,106,.25),0 4px 20px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s}
+.btn-grow:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 0 80px rgba(126,203,106,.4),0 8px 40px rgba(0,0,0,.5)}
+.btn-grow:disabled{opacity:.5;cursor:none;transform:none}
+.btn-outline{padding:16px 40px;border-radius:50px;background:transparent;border:1px solid rgba(232,240,224,.15);color:rgba(232,240,224,.7);font-size:.9rem;letter-spacing:.04em;cursor:none;font-family:'Lato',sans-serif;transition:border-color .3s,background .3s}
+.btn-outline:hover{border-color:rgba(126,203,106,.4);background:rgba(126,203,106,.06)}
+.scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;color:rgba(232,240,224,.25);animation:fadeUp 1s 1s ease both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(126,203,106,.5),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{transform:scaleY(1);opacity:.6}50%{transform:scaleY(.5);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══════════════════════════════════════════════════════
-   SECTION : HERO
-══════════════════════════════════════════════════════ */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 40px 80px;
-  position: relative;
-}
+/* ── MARQUEE ── */
+.marquee-wrap{overflow:hidden;border-top:1px solid rgba(126,203,106,.08);border-bottom:1px solid rgba(126,203,106,.08);background:rgba(4,10,4,.8);padding:20px 0}
+.marquee-track{display:flex;gap:60px;animation:marquee 22s linear infinite;white-space:nowrap}
+.marquee-item{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(232,240,224,.35);flex-shrink:0;display:flex;align-items:center;gap:20px}
+.marquee-item span{color:#7ecb6a;font-style:normal;font-family:'DM Mono',monospace;font-size:.7rem}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ground soil gradient at bottom */
-.hero::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
-  background: linear-gradient(to top, rgba(12,6,2,.9), transparent);
-  pointer-events: none;
-}
+/* ── GLASS CARDS ── */
+.content-section{min-height:100vh;display:flex;align-items:center;padding:100px 60px;position:relative}
+.glass-card{background:rgba(4,10,4,.78);backdrop-filter:blur(24px);border:1px solid rgba(126,203,106,.1);border-radius:28px;padding:56px 52px;max-width:580px;box-shadow:0 32px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(126,203,106,.08)}
+.glass-card-wide{background:rgba(4,10,4,.78);backdrop-filter:blur(24px);border:1px solid rgba(126,203,106,.1);border-radius:28px;padding:56px 52px;width:100%;max-width:1020px;margin:0 auto;box-shadow:0 32px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(126,203,106,.08)}
+.section-tag{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:#7ecb6a;text-transform:uppercase;margin-bottom:16px;display:block}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;line-height:1.1;margin-bottom:20px;color:#e8f0e0}
+.section-title em{font-style:italic;color:#b8e8a0;font-weight:400}
+.section-body{color:rgba(232,240,224,.55);font-size:.95rem;line-height:1.8}
 
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  border: 1px solid rgba(126,203,106,.2);
-  background: rgba(126,203,106,.06);
-  border-radius: 50px; padding: 6px 18px; margin-bottom: 40px;
-  font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .14em;
-  color: #7ecb6a;
-  animation: fadeUp .8s ease both;
-}
-.badge-pulse {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #7ecb6a; box-shadow: 0 0 8px #7ecb6a;
-  animation: glow 2s infinite;
-}
-@keyframes glow { 0%,100%{opacity:1;box-shadow:0 0 8px #7ecb6a}50%{opacity:.4;box-shadow:0 0 4px #7ecb6a} }
+/* ── STREAK STATES — redesigned with clear explanation ── */
+.streak-timeline{display:flex;flex-direction:column;gap:0;margin-top:32px;position:relative}
+.streak-timeline::before{content:'';position:absolute;left:28px;top:28px;bottom:28px;width:1px;background:linear-gradient(to bottom,rgba(126,203,106,.4),rgba(126,203,106,.1),rgba(180,90,30,.3),rgba(120,60,20,.2));pointer-events:none}
+.streak-row{display:flex;gap:20px;align-items:flex-start;padding:20px 0;position:relative;transition:opacity .3s}
+.streak-row:not(:last-child)::after{content:'';position:absolute;left:28px;bottom:0;width:1px;height:0}
+.streak-icon-wrap{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;border:1px solid;position:relative;z-index:1;transition:transform .3s}
+.streak-row:hover .streak-icon-wrap{transform:scale(1.1)}
+.si-green{background:rgba(126,203,106,.1);border-color:rgba(126,203,106,.3);box-shadow:0 0 20px rgba(126,203,106,.15)}
+.si-blue{background:rgba(80,130,180,.1);border-color:rgba(80,130,180,.25)}
+.si-amber{background:rgba(196,160,58,.1);border-color:rgba(196,160,58,.3)}
+.si-brown{background:rgba(120,60,20,.1);border-color:rgba(120,60,20,.3)}
+.streak-content{flex:1;padding-top:8px}
+.streak-when{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.sw-green{color:#7ecb6a}
+.sw-blue{color:#6ba0c8}
+.sw-amber{color:#c4a03a}
+.sw-brown{color:#8a5020}
+.streak-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#e8f0e0;margin-bottom:4px}
+.streak-desc{font-size:.82rem;color:rgba(232,240,224,.45);line-height:1.6}
+.streak-quote{display:inline-block;margin-top:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:.85rem;color:rgba(232,240,224,.35)}
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3.5rem, 9vw, 9rem);
-  font-weight: 900; line-height: .88;
-  letter-spacing: -.03em;
-  margin-bottom: 12px;
-  animation: fadeUp .9s .1s ease both;
-}
-.hero-title .line1 { display: block; color: #e8f0e0; }
-.hero-title .line2 {
-  display: block; font-style: italic; font-weight: 400;
-  background: linear-gradient(135deg, #7ecb6a, #b8e8a0, #4a9a38);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+.feat-item{border:1px solid rgba(126,203,106,.1);border-radius:16px;padding:24px 20px;background:rgba(126,203,106,.03);transition:border-color .3s,background .3s,transform .3s}
+.feat-item:hover{border-color:rgba(126,203,106,.25);background:rgba(126,203,106,.07);transform:translateY(-3px)}
+.feat-icon{font-size:1.6rem;margin-bottom:10px;display:block}
+.feat-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:#e8f0e0;margin-bottom:6px}
+.feat-txt{font-size:.8rem;color:rgba(232,240,224,.45);line-height:1.6}
+.feat-pill{display:inline-block;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:#7ecb6a;border:1px solid rgba(126,203,106,.25);padding:2px 8px;border-radius:20px;margin-top:10px}
 
-.hero-tagline {
-  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
-  font-size: clamp(1rem, 2.5vw, 1.6rem);
-  color: rgba(232,240,224,.5); margin-bottom: 56px;
-  animation: fadeUp 1s .25s ease both;
-}
+/* ── DEVICE ── */
+.device-wrap{display:flex;justify-content:center;align-items:center;position:relative;height:280px;margin-bottom:28px}
+.dev-box{width:164px;height:164px;border-radius:36px;background:linear-gradient(145deg,#111a11,#080e08);border:1px solid rgba(126,203,106,.18);box-shadow:0 0 80px rgba(126,203,106,.1),0 40px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;z-index:1}
+.dev-screen{width:90px;height:54px;border-radius:10px;background:linear-gradient(135deg,#020602,#040a04);border:1px solid rgba(126,203,106,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.dev-timer{font-family:'DM Mono',monospace;font-size:.88rem;color:#7ecb6a;font-weight:500}
+.dev-status{font-family:'DM Mono',monospace;font-size:.42rem;color:rgba(126,203,106,.45);letter-spacing:.12em}
+.dev-btns{display:flex;gap:8px}
+.dev-btn{width:26px;height:9px;border-radius:5px;background:#141e14;border:1px solid rgba(255,255,255,.07)}
+.dev-btn.go{border-color:rgba(126,203,106,.4);box-shadow:0 0 8px rgba(126,203,106,.15)}
+.dev-btn.sos{border-color:rgba(220,70,50,.3)}
+.dev-orbit{position:absolute;border-radius:50%;border:1px solid;animation:orb linear infinite;top:50%;left:50%;transform-origin:0 0}
+.orb1{width:240px;height:240px;margin-left:-120px;margin-top:-120px;border-color:rgba(126,203,106,.08);animation-duration:18s}
+.orb2{width:320px;height:320px;margin-left:-160px;margin-top:-160px;border-color:rgba(126,203,106,.04);animation-duration:30s;animation-direction:reverse}
+.orb-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:#7ecb6a;box-shadow:0 0 14px #7ecb6a;top:50%;left:50%;margin-top:-120px;margin-left:-3px;transform-origin:3px 120px;animation:orb 18s linear infinite}
+@keyframes orb{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.dev-btn-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.dev-btn-card{border:1px solid rgba(126,203,106,.1);border-radius:12px;padding:16px 14px;background:rgba(126,203,106,.03);transition:all .3s}
+.dev-btn-card:hover{border-color:rgba(126,203,106,.3);background:rgba(126,203,106,.07)}
+.dbc-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:#7ecb6a;margin-bottom:5px}
+.dbc-desc{font-size:.78rem;color:rgba(232,240,224,.4);line-height:1.5}
 
-/* live counter */
-.counter-block {
-  display: inline-flex; align-items: center; gap: 20px;
-  border: 1px solid rgba(126,203,106,.15);
-  background: rgba(4,10,4,.6);
-  backdrop-filter: blur(12px);
-  border-radius: 16px; padding: 18px 32px;
-  margin-bottom: 44px;
-  animation: fadeUp 1s .4s ease both;
-}
-.counter-num-wrap { text-align: center; }
-.counter-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem; font-weight: 700; color: #b8e8a0;
-  line-height: 1; display: block;
-}
-.counter-sub {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .12em; color: rgba(232,240,224,.4);
-  text-transform: uppercase; margin-top: 4px; display: block;
-}
-.counter-divider { width: 1px; height: 44px; background: rgba(126,203,106,.12); }
-.counter-right { display: flex; flex-direction: column; gap: 6px; }
-.counter-stat {
-  display: flex; align-items: center; gap: 8px;
-  font-family: 'DM Mono', monospace; font-size: .72rem;
-  color: rgba(232,240,224,.45); letter-spacing: .05em;
-}
-.cs-dot { width: 6px; height: 6px; border-radius: 50%; background: #7ecb6a; box-shadow: 0 0 6px #7ecb6a; animation: glow 2s infinite; flex-shrink: 0; }
-.cs-dot.amber { background: #c4a03a; box-shadow: 0 0 6px #c4a03a; animation-delay: .8s; }
+/* ── PRICING ── */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.price-card{border:1px solid rgba(126,203,106,.1);border-radius:22px;padding:36px 30px;background:rgba(126,203,106,.03);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.price-card:hover{transform:translateY(-5px);border-color:rgba(126,203,106,.25)}
+.price-card.feat{border-color:rgba(126,203,106,.25);background:rgba(126,203,106,.06)}
+.price-card.feat::before{content:'';position:absolute;top:-60px;right:-60px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(126,203,106,.12),transparent)}
+.price-badge{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:#7ecb6a;border:1px solid rgba(126,203,106,.25);padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:16px}
+.price-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;color:#e8f0e0}
+.price-amount{font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;line-height:1;color:#e8f0e0;margin-bottom:6px}
+.price-amount span{font-size:.9rem;color:rgba(232,240,224,.4)}
+.price-desc{font-size:.8rem;color:rgba(232,240,224,.4);margin-bottom:22px;line-height:1.6}
+.price-list{display:flex;flex-direction:column;gap:8px}
+.price-item{font-size:.82rem;color:rgba(232,240,224,.55);display:flex;gap:8px}
+.price-item::before{content:'↳';color:#7ecb6a;flex-shrink:0}
 
-.hero-ctas {
-  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-  animation: fadeUp 1s .55s ease both;
-}
-.btn-grow {
-  padding: 16px 40px; border-radius: 50px;
-  background: linear-gradient(135deg, #4a9a38, #7ecb6a, #b8e8a0);
-  color: #020a02; font-weight: 700; font-size: .9rem; letter-spacing: .06em;
-  border: none; cursor: none; font-family: 'Lato', sans-serif;
-  box-shadow: 0 0 60px rgba(126,203,106,.25), 0 4px 20px rgba(0,0,0,.4);
-  transition: transform .3s, box-shadow .3s;
-}
-.btn-grow:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 0 80px rgba(126,203,106,.4), 0 8px 40px rgba(0,0,0,.5); }
-.btn-grow:disabled { opacity: .5; cursor: none; transform: none; }
-.btn-outline {
-  padding: 16px 40px; border-radius: 50px;
-  background: transparent; border: 1px solid rgba(232,240,224,.15);
-  color: rgba(232,240,224,.7); font-size: .9rem; letter-spacing: .04em;
-  cursor: none; font-family: 'Lato', sans-serif;
-  transition: border-color .3s, background .3s;
-}
-.btn-outline:hover { border-color: rgba(126,203,106,.4); background: rgba(126,203,106,.06); }
+/* ── NOTIFY ── */
+.notify-inner{max-width:600px;margin:0 auto;text-align:center}
+.notify-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;margin-bottom:14px;color:#e8f0e0}
+.notify-title em{font-style:italic;color:#b8e8a0;font-weight:400}
+.notify-sub{color:rgba(232,240,224,.5);font-size:.95rem;line-height:1.8;margin-bottom:40px}
+.notify-sub strong{color:#e8f0e0}
+.notify-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+#emailInput{background:rgba(126,203,106,.05);border:1px solid rgba(126,203,106,.2);color:#e8f0e0;padding:14px 24px;border-radius:50px;font-size:.9rem;font-family:'Lato',sans-serif;outline:none;width:280px;transition:border-color .3s,background .3s}
+#emailInput:focus{border-color:rgba(126,203,106,.5);background:rgba(126,203,106,.08)}
+#notifyMsg{min-height:20px;font-size:.82rem;color:#7ecb6a;font-family:'DM Mono',monospace;margin-top:12px;letter-spacing:.06em}
 
-/* scroll hint */
-.scroll-hint {
-  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .14em;
-  color: rgba(232,240,224,.25); animation: fadeUp 1s 1s ease both;
-}
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, rgba(126,203,106,.5), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:.6}50%{transform:scaleY(.5);opacity:1} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)} }
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .4s,backdrop-filter .4s}
+.modal-overlay.open{opacity:1;pointer-events:all;backdrop-filter:blur(20px);background:rgba(2,5,2,.7)}
+.modal-box{width:100%;max-width:460px;background:rgba(8,14,8,.96);border:1px solid rgba(126,203,106,.2);border-radius:28px;padding:52px 44px;text-align:center;position:relative;overflow:hidden;transform:translateY(60px) scale(.92);transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .4s;opacity:0;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.modal-overlay.open .modal-box{transform:none;opacity:1}
+.modal-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(126,203,106,.15),transparent);pointer-events:none}
+.confetti-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.modal-icon{font-size:3rem;display:block;margin-bottom:16px;animation:iconBounce .7s .1s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes iconBounce{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;margin-bottom:8px;color:#e8f0e0}
+.modal-email{display:inline-block;font-family:'DM Mono',monospace;font-size:.75rem;color:#b8e8a0;background:rgba(126,203,106,.08);border:1px solid rgba(126,203,106,.2);padding:5px 16px;border-radius:20px;margin-bottom:20px}
+.modal-rank{display:inline-flex;align-items:center;gap:14px;background:rgba(126,203,106,.05);border:1px solid rgba(126,203,106,.12);border-radius:14px;padding:14px 22px;margin-bottom:22px}
+.modal-rank-num{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:400;color:#b8e8a0;line-height:1}
+.modal-rank-txt{font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(232,240,224,.5);text-align:left;line-height:1.6}
+.modal-body{font-size:.88rem;color:rgba(232,240,224,.5);line-height:1.7;margin-bottom:28px}
+.modal-btn{padding:13px 32px;border-radius:50px;background:linear-gradient(135deg,#4a9a38,#7ecb6a);color:#020a02;font-weight:700;font-size:.85rem;border:none;cursor:none;font-family:'Lato',sans-serif;box-shadow:0 0 30px rgba(126,203,106,.25);transition:transform .2s,box-shadow .2s}
+.modal-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(126,203,106,.35)}
 
-/* ══════════════════════════════════════════════════════
-   CONTENT SECTIONS — float over the plant
-══════════════════════════════════════════════════════ */
-.content-section {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 100px 60px;
-  position: relative;
-}
+/* ── SCROLL REVEAL ── */
+.sr{opacity:0;transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.sr.in{opacity:1;transform:none}
+.sr-l{opacity:0;transform:translateX(-60px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.sr-l.in{opacity:1;transform:none}
+.sr-r{opacity:0;transform:translateX(60px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.sr-r.in{opacity:1;transform:none}
+.sr-s{opacity:0;transform:scale(.88);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.sr-s.in{opacity:1;transform:none}
+.stag>*{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.stag.in>*:nth-child(1){opacity:1;transform:none;transition-delay:.04s}
+.stag.in>*:nth-child(2){opacity:1;transform:none;transition-delay:.12s}
+.stag.in>*:nth-child(3){opacity:1;transform:none;transition-delay:.20s}
+.stag.in>*:nth-child(4){opacity:1;transform:none;transition-delay:.28s}
+.stag.in>*:nth-child(5){opacity:1;transform:none;transition-delay:.36s}
+.stag.in>*:nth-child(6){opacity:1;transform:none;transition-delay:.44s}
 
-/* glass card style for content blocks */
-.glass-card {
-  background: rgba(4,10,4,.75);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(126,203,106,.1);
-  border-radius: 28px;
-  padding: 56px 52px;
-  max-width: 560px;
-  box-shadow: 0 32px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(126,203,106,.08);
-}
-.glass-card-wide {
-  background: rgba(4,10,4,.75);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(126,203,106,.1);
-  border-radius: 28px;
-  padding: 56px 52px;
-  width: 100%; max-width: 1000px; margin: 0 auto;
-  box-shadow: 0 32px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(126,203,106,.08);
-}
-.section-tag {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .2em; color: #7ecb6a; text-transform: uppercase;
-  margin-bottom: 16px; display: block;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
-  font-weight: 700; line-height: 1.1;
-  margin-bottom: 20px; color: #e8f0e0;
-}
-.section-title em { font-style: italic; color: #b8e8a0; font-weight: 400; }
-.section-body { color: rgba(232,240,224,.55); font-size: .95rem; line-height: 1.8; }
+/* ── FOOTER ── */
+footer{border-top:1px solid rgba(126,203,106,.08);padding:32px 56px;display:flex;justify-content:space-between;align-items:center;color:rgba(232,240,224,.3);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.07em;background:rgba(4,8,4,.9);position:relative;z-index:2}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:#b8e8a0;letter-spacing:.08em}
 
-/* ── streak states ── */
-.streak-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin-top: 32px; border-radius: 18px; overflow: hidden; background: rgba(126,203,106,.05); }
-.streak-item {
-  background: rgba(4,10,4,.6); padding: 28px 18px;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  border-bottom: 2px solid transparent; transition: background .3s, border-color .3s;
-  cursor: default;
-}
-.streak-item:hover { background: rgba(126,203,106,.05); }
-.streak-item.s1 { border-color: #7ecb6a; }
-.streak-item.s2 { border-color: #6b8f6b; }
-.streak-item.s3 { border-color: #c4a03a; }
-.streak-item.s4 { border-color: #6b3a1a; }
-.streak-emoji { font-size: 2.4rem; }
-.streak-day { font-family: 'DM Mono', monospace; font-size: .6rem; letter-spacing: .12em; }
-.streak-day.s1 { color: #7ecb6a; }
-.streak-day.s2 { color: #6b8f6b; }
-.streak-day.s3 { color: #c4a03a; }
-.streak-day.s4 { color: #8a5030; }
-.streak-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: #e8f0e0; }
-.streak-desc { font-size: .75rem; color: rgba(232,240,224,.4); text-align: center; line-height: 1.5; }
-
-/* ── features ── */
-.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 32px; }
-.feat-item {
-  border: 1px solid rgba(126,203,106,.1); border-radius: 16px; padding: 24px 20px;
-  background: rgba(126,203,106,.03); transition: border-color .3s, background .3s, transform .3s;
-}
-.feat-item:hover { border-color: rgba(126,203,106,.25); background: rgba(126,203,106,.07); transform: translateY(-3px); }
-.feat-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
-.feat-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #e8f0e0; margin-bottom: 6px; }
-.feat-txt { font-size: .8rem; color: rgba(232,240,224,.45); line-height: 1.6; }
-.feat-pill {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: .55rem;
-  letter-spacing: .1em; color: #7ecb6a; border: 1px solid rgba(126,203,106,.25);
-  padding: 2px 8px; border-radius: 20px; margin-top: 10px;
-}
-
-/* ── device ── */
-.device-wrap { display: flex; justify-content: center; align-items: center; position: relative; }
-.dev-box {
-  width: 164px; height: 164px; border-radius: 36px;
-  background: linear-gradient(145deg, #111a11, #080e08);
-  border: 1px solid rgba(126,203,106,.18);
-  box-shadow: 0 0 80px rgba(126,203,106,.1), 0 40px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-}
-.dev-screen {
-  width: 90px; height: 54px; border-radius: 10px;
-  background: linear-gradient(135deg, #020602, #040a04);
-  border: 1px solid rgba(126,203,106,.25);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-}
-.dev-timer { font-family: 'DM Mono', monospace; font-size: .88rem; color: #7ecb6a; font-weight: 500; }
-.dev-status { font-family: 'DM Mono', monospace; font-size: .42rem; color: rgba(126,203,106,.45); letter-spacing: .12em; }
-.dev-btns { display: flex; gap: 8px; }
-.dev-btn { width: 26px; height: 9px; border-radius: 5px; background: #141e14; border: 1px solid rgba(255,255,255,.07); }
-.dev-btn.go { border-color: rgba(126,203,106,.4); box-shadow: 0 0 8px rgba(126,203,106,.15); }
-.dev-btn.sos { border-color: rgba(220,70,50,.3); }
-/* orbit */
-.dev-orbit { position: absolute; border-radius: 50%; border: 1px solid; animation: orb linear infinite; }
-.orb1 { width: 240px; height: 240px; border-color: rgba(126,203,106,.08); animation-duration: 18s; }
-.orb2 { width: 320px; height: 320px; border-color: rgba(126,203,106,.04); animation-duration: 30s; animation-direction: reverse; }
-.orb-dot {
-  position: absolute; width: 7px; height: 7px; border-radius: 50%;
-  background: #7ecb6a; box-shadow: 0 0 14px #7ecb6a;
-  top: calc(50% - 120px); left: calc(50% - 3px);
-  transform-origin: 3px 120px;
-  animation: orb 18s linear infinite;
-}
-@keyframes orb { from{transform:rotate(0)}to{transform:rotate(360deg)} }
-
-.dev-btn-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
-.dev-btn-card {
-  border: 1px solid rgba(126,203,106,.1); border-radius: 12px; padding: 16px 14px;
-  background: rgba(126,203,106,.03); transition: all .3s;
-}
-.dev-btn-card:hover { border-color: rgba(126,203,106,.3); background: rgba(126,203,106,.07); }
-.dbc-label { font-family: 'DM Mono', monospace; font-size: .65rem; letter-spacing: .1em; color: #7ecb6a; margin-bottom: 5px; }
-.dbc-desc { font-size: .78rem; color: rgba(232,240,224,.4); line-height: 1.5; }
-
-/* ── pricing ── */
-.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
-.price-card {
-  border: 1px solid rgba(126,203,106,.1); border-radius: 22px; padding: 36px 30px;
-  background: rgba(126,203,106,.03); position: relative; overflow: hidden;
-  transition: transform .3s, border-color .3s;
-}
-.price-card:hover { transform: translateY(-5px); border-color: rgba(126,203,106,.25); }
-.price-card.feat { border-color: rgba(126,203,106,.25); background: rgba(126,203,106,.06); }
-.price-card.feat::before {
-  content: ''; position: absolute; top: -60px; right: -60px;
-  width: 150px; height: 150px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(126,203,106,.12), transparent);
-}
-.price-badge { font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .12em; color: #7ecb6a; border: 1px solid rgba(126,203,106,.25); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
-.price-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; color: #e8f0e0; }
-.price-amount { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; line-height: 1; color: #e8f0e0; margin-bottom: 6px; }
-.price-amount span { font-size: .9rem; color: rgba(232,240,224,.4); }
-.price-desc { font-size: .8rem; color: rgba(232,240,224,.4); margin-bottom: 22px; line-height: 1.6; }
-.price-list { display: flex; flex-direction: column; gap: 8px; }
-.price-item { font-size: .82rem; color: rgba(232,240,224,.55); display: flex; gap: 8px; }
-.price-item::before { content: '↳'; color: #7ecb6a; flex-shrink: 0; }
-
-/* ── notify ── */
-.notify-inner { max-width: 600px; margin: 0 auto; text-align: center; }
-.notify-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; line-height: 1.1;
-  margin-bottom: 14px; color: #e8f0e0;
-}
-.notify-title em { font-style: italic; color: #b8e8a0; font-weight: 400; }
-.notify-sub { color: rgba(232,240,224,.5); font-size: .95rem; line-height: 1.8; margin-bottom: 40px; }
-.notify-sub strong { color: #e8f0e0; }
-.notify-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-#emailInput {
-  background: rgba(126,203,106,.05); border: 1px solid rgba(126,203,106,.2);
-  color: #e8f0e0; padding: 14px 24px; border-radius: 50px;
-  font-size: .9rem; font-family: 'Lato', sans-serif; outline: none; width: 280px;
-  transition: border-color .3s, background .3s;
-}
-#emailInput:focus { border-color: rgba(126,203,106,.5); background: rgba(126,203,106,.08); }
-#notifyMsg { min-height: 20px; font-size: .82rem; color: #7ecb6a; font-family: 'DM Mono', monospace; margin-top: 12px; letter-spacing: .06em; }
-
-/* ── philosophy strip ── */
-.marquee-wrap { overflow: hidden; border-top: 1px solid rgba(126,203,106,.08); border-bottom: 1px solid rgba(126,203,106,.08); background: rgba(4,10,4,.8); padding: 20px 0; }
-.marquee-track { display: flex; gap: 60px; animation: marquee 22s linear infinite; white-space: nowrap; }
-.marquee-item { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(232,240,224,.35); flex-shrink: 0; display: flex; align-items: center; gap: 20px; }
-.marquee-item span { color: #7ecb6a; font-style: normal; font-family: 'DM Mono', monospace; font-size: .7rem; }
-@keyframes marquee { from{transform:translateX(0)}to{transform:translateX(-50%)} }
-
-/* ══════════════════════════════════════════════════════
-   CONFIRMATION MODAL
-══════════════════════════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  display: flex; align-items: center; justify-content: center; padding: 24px;
-  opacity: 0; pointer-events: none; transition: opacity .4s, backdrop-filter .4s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; backdrop-filter: blur(20px); background: rgba(2,5,2,.7); }
-.modal-box {
-  width: 100%; max-width: 460px;
-  background: rgba(8,14,8,.95);
-  border: 1px solid rgba(126,203,106,.2);
-  border-radius: 28px; padding: 52px 44px; text-align: center;
-  position: relative; overflow: hidden;
-  transform: translateY(60px) scale(.92);
-  transition: transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s;
-  opacity: 0; box-shadow: 0 40px 100px rgba(0,0,0,.7), 0 0 100px rgba(126,203,106,.05);
-}
-.modal-overlay.open .modal-box { transform: none; opacity: 1; }
-.modal-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(126,203,106,.15), transparent); pointer-events: none; }
-.confetti-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.modal-icon { font-size: 3rem; display: block; margin-bottom: 16px; animation: iconBounce .7s .1s cubic-bezier(.34,1.56,.64,1) both; }
-@keyframes iconBounce { from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:none;opacity:1} }
-.modal-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; margin-bottom: 8px; color: #e8f0e0; }
-.modal-email { display: inline-block; font-family: 'DM Mono', monospace; font-size: .75rem; color: #b8e8a0; background: rgba(126,203,106,.08); border: 1px solid rgba(126,203,106,.2); padding: 5px 16px; border-radius: 20px; margin-bottom: 20px; }
-.modal-rank { display: inline-flex; align-items: center; gap: 14px; background: rgba(126,203,106,.05); border: 1px solid rgba(126,203,106,.12); border-radius: 14px; padding: 14px 22px; margin-bottom: 22px; }
-.modal-rank-num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 400; color: #b8e8a0; line-height: 1; }
-.modal-rank-txt { font-family: 'DM Mono', monospace; font-size: .7rem; color: rgba(232,240,224,.5); text-align: left; line-height: 1.6; }
-.modal-body { font-size: .88rem; color: rgba(232,240,224,.5); line-height: 1.7; margin-bottom: 28px; }
-.modal-btn { padding: 13px 32px; border-radius: 50px; background: linear-gradient(135deg, #4a9a38, #7ecb6a); color: #020a02; font-weight: 700; font-size: .85rem; border: none; cursor: none; font-family: 'Lato', sans-serif; box-shadow: 0 0 30px rgba(126,203,106,.25); transition: transform .2s, box-shadow .2s; }
-.modal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(126,203,106,.35); }
-
-/* ══════════════════════════════════════════════════════
-   SCROLL REVEAL
-══════════════════════════════════════════════════════ */
-.sr { opacity: 0; transform: translateY(50px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
-.sr.in { opacity: 1; transform: none; }
-.sr-l { opacity: 0; transform: translateX(-60px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
-.sr-l.in { opacity: 1; transform: none; }
-.sr-r { opacity: 0; transform: translateX(60px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
-.sr-r.in { opacity: 1; transform: none; }
-.sr-s { opacity: 0; transform: scale(.88); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
-.sr-s.in { opacity: 1; transform: none; }
-.stag > * { opacity: 0; transform: translateY(30px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-.stag.in > *:nth-child(1) { opacity:1;transform:none;transition-delay:.04s }
-.stag.in > *:nth-child(2) { opacity:1;transform:none;transition-delay:.12s }
-.stag.in > *:nth-child(3) { opacity:1;transform:none;transition-delay:.20s }
-.stag.in > *:nth-child(4) { opacity:1;transform:none;transition-delay:.28s }
-.stag.in > *:nth-child(5) { opacity:1;transform:none;transition-delay:.36s }
-.stag.in > *:nth-child(6) { opacity:1;transform:none;transition-delay:.44s }
-
-/* ══ FOOTER ══ */
-footer { border-top: 1px solid rgba(126,203,106,.08); padding: 32px 56px; display: flex; justify-content: space-between; align-items: center; color: rgba(232,240,224,.3); font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .07em; background: rgba(4,8,4,.9); position: relative; z-index: 2; }
-.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #b8e8a0; letter-spacing: .08em; }
-
-@media(max-width:768px) {
-  nav { padding: 16px 24px; }
-  nav ul { display: none; }
-  .content-section { padding: 80px 20px; }
-  .glass-card, .glass-card-wide { padding: 36px 24px; }
-  .streak-grid { grid-template-columns: 1fr 1fr; }
-  .feat-grid { grid-template-columns: 1fr; }
-  .device-inner-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-  .price-grid { grid-template-columns: 1fr; }
-  footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px; }
-  .counter-block { flex-direction: column; gap: 12px; padding: 20px 24px; }
-  .counter-divider { width: 40px; height: 1px; }
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  nav ul{display:none}
+  .content-section{padding:80px 20px}
+  .glass-card,.glass-card-wide{padding:36px 24px}
+  .feat-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:10px;text-align:center;padding:24px}
+  .counter-block{flex-direction:column;gap:12px;padding:20px 24px}
+  .counter-divider{width:40px;height:1px}
 }
 </style>
 </head>
@@ -478,7 +230,7 @@ footer { border-top: 1px solid rgba(126,203,106,.08); padding: 32px 56px; displa
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- Plant Canvas — fullpage background -->
+<!-- Plant Canvas -->
 <canvas id="plantCanvas"></canvas>
 
 <!-- Modal -->
@@ -487,14 +239,14 @@ footer { border-top: 1px solid rgba(126,203,106,.08); padding: 32px 56px; displa
     <div class="modal-glow"></div>
     <div class="confetti-layer" id="confettiLayer"></div>
     <span class="modal-icon">🌱</span>
-    <div class="modal-title">Ta graine a germé !</div>
+    <div class="modal-title" data-i18n="modal_title">Ta graine a germé !</div>
     <div class="modal-email" id="modalEmail">ton@email.com</div>
     <div class="modal-rank">
       <div class="modal-rank-num" id="modalRankNum">#—</div>
-      <div class="modal-rank-txt">Tu es le <strong id="modalRankLabel">—ème</strong><br>à rejoindre NEUROX</div>
+      <div class="modal-rank-txt" data-i18n="modal_rank_txt">Tu es le <strong id="modalRankLabel">—ème</strong><br>à rejoindre NEUROX</div>
     </div>
-    <div class="modal-body">On te prévient dès que NEUROX est prêt à pousser.</div>
-    <button class="modal-btn" onclick="closeModal()">Je fais pousser mon arbre 🌳</button>
+    <div class="modal-body" data-i18n="modal_body">Un email de confirmation t'attend 📬<br>On te prévient dès que NEUROX est prêt.</div>
+    <button class="modal-btn" onclick="closeModal()" data-i18n="modal_btn">Je fais pousser mon arbre 🌳</button>
   </div>
 </div>
 
@@ -502,152 +254,152 @@ footer { border-top: 1px solid rgba(126,203,106,.08); padding: 32px 56px; displa
 <nav id="mainNav">
   <div class="nav-logo"><span class="nav-logo-icon">🌿</span> NEUROX</div>
   <ul>
-    <li><a href="#streak">La plante</a></li>
-    <li><a href="#features">Fonctions</a></li>
-    <li><a href="#device">Appareil</a></li>
-    <li><a href="#pricing">Prix</a></li>
+    <li><a href="#streak" data-i18n="nav_plant">La plante</a></li>
+    <li><a href="#features" data-i18n="nav_features">Fonctions</a></li>
+    <li><a href="#device" data-i18n="nav_device">Appareil</a></li>
+    <li><a href="#pricing" data-i18n="nav_pricing">Prix</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">Planter ma graine</button>
+  <div class="nav-right">
+    <!-- Language selector -->
+    <div class="lang-selector">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">
+        <span id="langFlag">🇫🇷</span>
+        <span id="langCode">FR</span>
+        <span style="font-size:.6rem;opacity:.5">▾</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option active" onclick="setLang('fr')"><span class="lang-flag">🇫🇷</span> Français</button>
+        <button class="lang-option" onclick="setLang('en')"><span class="lang-flag">🇬🇧</span> English</button>
+        <button class="lang-option" onclick="setLang('es')"><span class="lang-flag">🇪🇸</span> Español</button>
+        <button class="lang-option" onclick="setLang('ru')"><span class="lang-flag">🇷🇺</span> Русский</button>
+        <button class="lang-option" onclick="setLang('zh')"><span class="lang-flag">🇨🇳</span> 中文</button>
+      </div>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})" data-i18n="nav_cta">Planter ma graine</button>
+  </div>
 </nav>
 
 <div class="page">
 
-<!-- ══ HERO ══ -->
+<!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-badge"><div class="badge-pulse"></div> Phase prototype · 2025</div>
+  <div class="hero-badge"><div class="badge-pulse"></div> <span data-i18n="hero_badge">Phase prototype · 2025</span></div>
   <h1 class="hero-title">
-    <span class="line1">Focus.</span>
-    <span class="line2">Naturellement.</span>
+    <span class="line1" data-i18n="hero_line1">Focus.</span>
+    <span class="line2" data-i18n="hero_line2">Naturellement.</span>
   </h1>
-  <p class="hero-tagline">"Les grandes choses poussent lentement."</p>
-
+  <p class="hero-tagline" data-i18n="hero_tagline">"Les grandes choses poussent lentement."</p>
   <div class="counter-block">
     <div class="counter-num-wrap">
       <span class="counter-num" id="lcNum">—</span>
-      <span class="counter-sub">graines plantées</span>
+      <span class="counter-sub" data-i18n="counter_sub">graines plantées</span>
     </div>
     <div class="counter-divider"></div>
     <div class="counter-right">
-      <div class="counter-stat"><div class="cs-dot"></div>Mis à jour en temps réel</div>
-      <div class="counter-stat"><div class="cs-dot amber"></div>Lancement bientôt</div>
+      <div class="counter-stat"><div class="cs-dot"></div><span data-i18n="counter_live">Mis à jour en temps réel</span></div>
+      <div class="counter-stat"><div class="cs-dot amber"></div><span data-i18n="counter_soon">Lancement bientôt</span></div>
     </div>
   </div>
-
   <div class="hero-ctas">
-    <button class="btn-grow" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">Planter ma graine 🌱</button>
-    <button class="btn-outline" onclick="document.getElementById('streak').scrollIntoView({behavior:'smooth'})">Découvrir l'univers →</button>
+    <button class="btn-grow" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})" data-i18n="hero_cta1">Planter ma graine 🌱</button>
+    <button class="btn-outline" onclick="document.getElementById('streak').scrollIntoView({behavior:'smooth'})" data-i18n="hero_cta2">Découvrir l'univers →</button>
   </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    <span>SCROLL</span>
-  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>SCROLL</span></div>
 </section>
 
-<!-- ══ MARQUEE ══ -->
+<!-- MARQUEE -->
 <div class="marquee-wrap">
-  <div class="marquee-track">
-    <div class="marquee-item"><span>✦</span> Les grandes choses poussent lentement.</div>
-    <div class="marquee-item"><span>✦</span> Never miss twice.</div>
-    <div class="marquee-item"><span>✦</span> Focus. Naturellement.</div>
-    <div class="marquee-item"><span>✦</span> Start. Build. Succeed.</div>
-    <div class="marquee-item"><span>✦</span> Ta concentration est une plante.</div>
-    <div class="marquee-item"><span>✦</span> Les grandes choses poussent lentement.</div>
-    <div class="marquee-item"><span>✦</span> Never miss twice.</div>
-    <div class="marquee-item"><span>✦</span> Focus. Naturellement.</div>
-    <div class="marquee-item"><span>✦</span> Start. Build. Succeed.</div>
-    <div class="marquee-item"><span>✦</span> Ta concentration est une plante.</div>
+  <div class="marquee-track" id="marqueeTrack">
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m1">Les grandes choses poussent lentement.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m2">Never miss twice.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m3">Focus. Naturellement.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m4">Start. Build. Succeed.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m5">Ta concentration est une plante.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m1">Les grandes choses poussent lentement.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m2">Never miss twice.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m3">Focus. Naturellement.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m4">Start. Build. Succeed.</span></div>
+    <div class="marquee-item"><span>✦</span> <span data-i18n="m5">Ta concentration est une plante.</span></div>
   </div>
 </div>
 
-<!-- ══ STREAK ══ -->
+<!-- STREAK -->
 <section class="content-section" id="streak" style="justify-content:flex-end">
   <div class="glass-card sr">
-    <span class="section-tag">Le système</span>
-    <h2 class="section-title">Ta plante<br><em>vit avec toi.</em></h2>
-    <p class="section-body">Oublie les streaks stressants. NEUROX remplace les chiffres par quelque chose de vivant — une plante qui grandit, se fane, et parfois meurt. Comme la vraie discipline.</p>
-    <div class="streak-grid stag">
-      <div class="streak-item s1">
-        <div class="streak-emoji">🌿</div>
-        <div class="streak-day s1">AUJOURD'HUI</div>
-        <div class="streak-name">En pleine forme</div>
-        <div class="streak-desc">Ta plante grandit et rayonne.</div>
+    <span class="section-tag" data-i18n="streak_tag">Le système</span>
+    <h2 class="section-title" data-i18n="streak_title">Ta plante<br><em>vit avec toi.</em></h2>
+    <p class="section-body" data-i18n="streak_body">Oublie les streaks stressants. NEUROX remplace les chiffres par quelque chose de vivant. Voici ce qui se passe selon tes jours de travail :</p>
+    <div class="streak-timeline stag">
+
+      <!-- État 1 : Tu travailles -->
+      <div class="streak-row">
+        <div class="streak-icon-wrap si-green">🌿</div>
+        <div class="streak-content">
+          <div class="streak-when sw-green" data-i18n="s1_when">AUJOURD'HUI — Tu travailles</div>
+          <div class="streak-title" data-i18n="s1_title">Ta plante pousse 🌱</div>
+          <div class="streak-desc" data-i18n="s1_desc">Chaque session complétée fait grandir ta plante. Elle prend de la hauteur, développe de nouvelles feuilles, et rayonne.</div>
+        </div>
       </div>
-      <div class="streak-item s2">
-        <div class="streak-emoji">🌧️</div>
-        <div class="streak-day s2">JOUR +1</div>
-        <div class="streak-name">Petite pluie</div>
-        <div class="streak-desc">Quelques feuilles tombent.</div>
+
+      <!-- État 2 : J+1 sans travailler -->
+      <div class="streak-row">
+        <div class="streak-icon-wrap si-blue">🌧️</div>
+        <div class="streak-content">
+          <div class="streak-when sw-blue" data-i18n="s2_when">JOUR +1 — Sans travailler</div>
+          <div class="streak-title" data-i18n="s2_title">Elle se fane un peu…</div>
+          <div class="streak-desc" data-i18n="s2_desc">Une légère pluie apparaît. Quelques feuilles tombent. La plante cesse de grandir mais reste en vie — il est encore temps de la sauver.</div>
+          <div class="streak-quote" data-i18n="s2_quote">"Même les plus grands arbres connaissent des jours de pluie."</div>
+        </div>
       </div>
-      <div class="streak-item s3">
-        <div class="streak-emoji">🍂</div>
-        <div class="streak-day s3">JOUR +2</div>
-        <div class="streak-name">Elle se fane…</div>
-        <div class="streak-desc">La plante perd son énergie.</div>
+
+      <!-- État 3 : J+2 sans travailler -->
+      <div class="streak-row">
+        <div class="streak-icon-wrap si-amber">🍂</div>
+        <div class="streak-content">
+          <div class="streak-when sw-amber" data-i18n="s3_when">JOUR +2 — Toujours sans travailler</div>
+          <div class="streak-title" data-i18n="s3_title">Elle s'éteint. 🪵</div>
+          <div class="streak-desc" data-i18n="s3_desc">Deux jours sans focus. La plante perd toutes ses feuilles et s'éteint. Mais elle rejoint ton jardin des souvenirs — tes efforts ne disparaissent jamais.</div>
+          <div class="streak-quote" data-i18n="s3_quote">"Chaque forêt commence par une nouvelle pousse."</div>
+        </div>
       </div>
-      <div class="streak-item s4">
-        <div class="streak-emoji">🪵</div>
-        <div class="streak-day s4">JOUR +3</div>
-        <div class="streak-name">Elle s'est éteinte</div>
-        <div class="streak-desc">Mais une nouvelle pousse attend.</div>
+
+      <!-- État 4 : Recommencer -->
+      <div class="streak-row">
+        <div class="streak-icon-wrap si-brown">✨</div>
+        <div class="streak-content">
+          <div class="streak-when sw-brown" data-i18n="s4_when">TU REVIENS — Une nouvelle chance</div>
+          <div class="streak-title" data-i18n="s4_title">Une nouvelle graine germe.</div>
+          <div class="streak-desc" data-i18n="s4_desc">Reprends une session et une nouvelle plante naît immédiatement. Chaque recommencement est une victoire, pas un échec.</div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ══ FEATURES ══ -->
+<!-- FEATURES -->
 <section class="content-section" id="features" style="justify-content:center">
   <div class="glass-card-wide sr">
-    <span class="section-tag">Fonctionnalités</span>
-    <h2 class="section-title">Tout ce qu'il faut<br>pour <em>grandir.</em></h2>
+    <span class="section-tag" data-i18n="feat_tag">Fonctionnalités</span>
+    <h2 class="section-title" data-i18n="feat_title">Tout ce qu'il faut<br>pour <em>grandir.</em></h2>
     <div class="feat-grid stag">
-      <div class="feat-item">
-        <span class="feat-icon">⏱</span>
-        <div class="feat-name">Méthode Pomodoro</div>
-        <div class="feat-txt">25 min de focus, 5 min de pause. Personnalisable. Un rythme qui respecte ton cerveau.</div>
-        <div class="feat-pill">CORE</div>
-      </div>
-      <div class="feat-item">
-        <span class="feat-icon">🔒</span>
-        <div class="feat-name">Blocage intelligent</div>
-        <div class="feat-txt">GO démarre et verrouille. J'AI FINI valide. SOS pour les urgences. Pas de compromis.</div>
-        <div class="feat-pill">FOCUS</div>
-      </div>
-      <div class="feat-item">
-        <span class="feat-icon">🌱</span>
-        <div class="feat-name">La plante vivante</div>
-        <div class="feat-txt">Pas de score, pas de flamme. Quelque chose de vivant qui te donne envie de revenir.</div>
-        <div class="feat-pill">UNIQUE</div>
-      </div>
-      <div class="feat-item">
-        <span class="feat-icon">📚</span>
-        <div class="feat-name">Jardin des souvenirs</div>
-        <div class="feat-txt">Chaque plante morte rejoint ton jardin. Tes efforts passés restent visibles.</div>
-        <div class="feat-pill">MÉMOIRE</div>
-      </div>
-      <div class="feat-item">
-        <span class="feat-icon">🎵</span>
-        <div class="feat-name">Ambiances sonores</div>
-        <div class="feat-txt">Forêt, pluie, sons blancs, lo-fi. Directement depuis l'appareil physique.</div>
-        <div class="feat-pill">IMMERSION</div>
-      </div>
-      <div class="feat-item">
-        <span class="feat-icon">🌿</span>
-        <div class="feat-name">Éco-responsable</div>
-        <div class="feat-txt">ABS recyclé, silicone recyclé. Premium dans le design, responsable dans les matières.</div>
-        <div class="feat-pill">PLANÈTE</div>
-      </div>
+      <div class="feat-item"><span class="feat-icon">⏱</span><div class="feat-name" data-i18n="f1_name">Méthode Pomodoro</div><div class="feat-txt" data-i18n="f1_txt">25 min de focus, 5 min de pause. Personnalisable. Un rythme qui respecte ton cerveau.</div><div class="feat-pill">CORE</div></div>
+      <div class="feat-item"><span class="feat-icon">🔒</span><div class="feat-name" data-i18n="f2_name">Blocage intelligent</div><div class="feat-txt" data-i18n="f2_txt">GO démarre et verrouille. J'AI FINI valide et récompense. SOS pour les vraies urgences uniquement.</div><div class="feat-pill">FOCUS</div></div>
+      <div class="feat-item"><span class="feat-icon">🌱</span><div class="feat-name" data-i18n="f3_name">La plante vivante</div><div class="feat-txt" data-i18n="f3_txt">Pas de score, pas de flamme. Quelque chose de vivant qui te donne envie de revenir chaque jour.</div><div class="feat-pill">UNIQUE</div></div>
+      <div class="feat-item"><span class="feat-icon">📚</span><div class="feat-name" data-i18n="f4_name">Jardin des souvenirs</div><div class="feat-txt" data-i18n="f4_txt">Chaque plante morte rejoint ton jardin. Tes efforts passés restent visibles pour toujours.</div><div class="feat-pill">MÉMOIRE</div></div>
+      <div class="feat-item"><span class="feat-icon">🎵</span><div class="feat-name" data-i18n="f5_name">Ambiances sonores</div><div class="feat-txt" data-i18n="f5_txt">Forêt, pluie, sons blancs, lo-fi. Lance directement depuis l'appareil physique.</div><div class="feat-pill">IMMERSION</div></div>
+      <div class="feat-item"><span class="feat-icon">🌿</span><div class="feat-name" data-i18n="f6_name">Éco-responsable</div><div class="feat-txt" data-i18n="f6_txt">ABS recyclé, silicone recyclé. Premium dans le design, responsable dans les matières.</div><div class="feat-pill">PLANÈTE</div></div>
     </div>
   </div>
 </section>
 
-<!-- ══ DEVICE ══ -->
+<!-- DEVICE -->
 <section class="content-section" id="device" style="justify-content:flex-start">
   <div class="glass-card sr">
-    <span class="section-tag">L'appareil</span>
-    <h2 class="section-title">Concret.<br><em>Physique.</em> Réel.</h2>
-    <p class="section-body" style="margin-bottom:28px">L'appareil rend la concentration tangible. Ce n'est plus une app parmi d'autres.</p>
-    <div class="device-wrap sr-s" style="margin-bottom:28px">
+    <span class="section-tag" data-i18n="dev_tag">L'appareil</span>
+    <h2 class="section-title" data-i18n="dev_title">Concret.<br><em>Physique.</em> Réel.</h2>
+    <p class="section-body" data-i18n="dev_body" style="margin-bottom:28px">L'appareil rend la concentration tangible. Ce n'est plus une app parmi d'autres — c'est un objet dédié.</p>
+    <div class="device-wrap sr-s">
       <div class="dev-orbit orb1"></div>
       <div class="dev-orbit orb2"></div>
       <div class="orb-dot"></div>
@@ -664,277 +416,430 @@ footer { border-top: 1px solid rgba(126,203,106,.08); padding: 32px 56px; displa
       </div>
     </div>
     <div class="dev-btn-cards stag">
-      <div class="dev-btn-card"><div class="dbc-label">GO</div><div class="dbc-desc">Démarre la session & active le focus</div></div>
-      <div class="dev-btn-card"><div class="dbc-label">J'AI FINI</div><div class="dbc-desc">Valide & fait pousser la plante</div></div>
-      <div class="dev-btn-card"><div class="dbc-label">MUSIQUE</div><div class="dbc-desc">Lance l'ambiance choisie dans l'app</div></div>
-      <div class="dev-btn-card"><div class="dbc-label">SOS</div><div class="dbc-desc">Arrêt d'urgence — déblocage immédiat</div></div>
+      <div class="dev-btn-card"><div class="dbc-label">GO</div><div class="dbc-desc" data-i18n="db1">Démarre la session & active le focus</div></div>
+      <div class="dev-btn-card"><div class="dbc-label" data-i18n="db2_lbl">J'AI FINI</div><div class="dbc-desc" data-i18n="db2">Valide & fait pousser la plante</div></div>
+      <div class="dev-btn-card"><div class="dbc-label" data-i18n="db3_lbl">MUSIQUE</div><div class="dbc-desc" data-i18n="db3">Lance l'ambiance choisie dans l'app</div></div>
+      <div class="dev-btn-card"><div class="dbc-label">SOS</div><div class="dbc-desc" data-i18n="db4">Arrêt d'urgence — déblocage immédiat</div></div>
     </div>
   </div>
 </section>
 
-<!-- ══ PRICING ══ -->
+<!-- PRICING -->
 <section class="content-section" id="pricing" style="justify-content:center">
   <div class="glass-card-wide sr" style="max-width:780px">
-    <span class="section-tag">Tarifs</span>
-    <h2 class="section-title">Simple.<br><em>Accessible.</em></h2>
+    <span class="section-tag" data-i18n="price_tag">Tarifs</span>
+    <h2 class="section-title" data-i18n="price_title">Simple.<br><em>Accessible.</em></h2>
     <div class="price-grid stag">
       <div class="price-card feat">
-        <div class="price-badge">BIENTÔT DISPONIBLE</div>
-        <div class="price-name">Appareil NEUROX</div>
+        <div class="price-badge" data-i18n="price_badge">BIENTÔT DISPONIBLE</div>
+        <div class="price-name" data-i18n="p1_name">Appareil NEUROX</div>
         <div class="price-amount">25<span> €</span></div>
-        <div class="price-desc">Achat unique. Pas d'abonnement obligatoire.</div>
+        <div class="price-desc" data-i18n="p1_desc">Achat unique. Pas d'abonnement obligatoire.</div>
         <div class="price-list">
-          <div class="price-item">Boîtier compact & premium</div>
-          <div class="price-item">4 boutons physiques</div>
-          <div class="price-item">Plante virtuelle incluse</div>
-          <div class="price-item">Matériaux éco-responsables</div>
-          <div class="price-item">Compatible iOS & Android</div>
+          <div class="price-item" data-i18n="p1_i1">Boîtier compact & premium</div>
+          <div class="price-item" data-i18n="p1_i2">4 boutons physiques</div>
+          <div class="price-item" data-i18n="p1_i3">Plante virtuelle incluse</div>
+          <div class="price-item" data-i18n="p1_i4">Matériaux éco-responsables</div>
+          <div class="price-item" data-i18n="p1_i5">Compatible iOS & Android</div>
         </div>
       </div>
       <div class="price-card">
-        <div class="price-badge">BIENTÔT DISPONIBLE</div>
-        <div class="price-name">App Premium</div>
-        <div class="price-amount">1,99<span> €/mois</span></div>
-        <div class="price-desc">En option. La version gratuite reste complète.</div>
+        <div class="price-badge" data-i18n="price_badge">BIENTÔT DISPONIBLE</div>
+        <div class="price-name" data-i18n="p2_name">App Premium</div>
+        <div class="price-amount">1,99<span data-i18n="p2_per"> €/mois</span></div>
+        <div class="price-desc" data-i18n="p2_desc">En option. La version gratuite reste complète.</div>
         <div class="price-list">
-          <div class="price-item">IA d'analyse comportementale</div>
-          <div class="price-item">Statistiques avancées</div>
-          <div class="price-item">Thèmes & plantes exclusifs</div>
-          <div class="price-item">Ambiances musicales étendues</div>
-          <div class="price-item">Mémo-Kit & organisation</div>
+          <div class="price-item" data-i18n="p2_i1">IA d'analyse comportementale</div>
+          <div class="price-item" data-i18n="p2_i2">Statistiques avancées</div>
+          <div class="price-item" data-i18n="p2_i3">Thèmes & plantes exclusifs</div>
+          <div class="price-item" data-i18n="p2_i4">Ambiances musicales étendues</div>
+          <div class="price-item" data-i18n="p2_i5">Mémo-Kit & organisation</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ NOTIFY ══ -->
+<!-- NOTIFY -->
 <section class="content-section" id="notify" style="justify-content:center;min-height:80vh">
   <div class="glass-card sr" style="max-width:600px;text-align:center">
-    <span class="section-tag" style="display:block;text-align:center">Rejoindre la liste</span>
-    <h2 class="notify-title">Créé par <em>Ivan,</em><br>14 ans.</h2>
-    <p class="notify-sub">J'ai conçu NEUROX parce que je voulais quelque chose qui me donne <strong>vraiment envie</strong> de travailler. Pas une app stressante — quelque chose de vivant.<br><br>Le prototype est sur SOLIDWORKS, bientôt imprimé au FABLAB de Dassault Systèmes.</p>
+    <span class="section-tag" style="display:block;text-align:center" data-i18n="notify_tag">Rejoindre la liste</span>
+    <h2 class="notify-title" data-i18n="notify_title">Créé par <em>Ivan,</em><br>14 ans.</h2>
+    <p class="notify-sub" data-i18n="notify_sub">J'ai conçu NEUROX parce que je voulais quelque chose qui me donne <strong>vraiment envie</strong> de travailler. Pas une app stressante — quelque chose de vivant.<br><br>Le prototype est sur SOLIDWORKS, bientôt imprimé au FABLAB de Dassault Systèmes.</p>
     <div class="notify-form">
-      <input type="email" id="emailInput" placeholder="ton@email.com">
-      <button class="btn-grow" id="notifyBtn" onclick="handleNotify()">Planter ma graine 🌱</button>
+      <input type="email" id="emailInput" data-i18n-placeholder="email_placeholder" placeholder="ton@email.com">
+      <button class="btn-grow" id="notifyBtn" onclick="handleNotify()" data-i18n="notify_btn">Planter ma graine 🌱</button>
     </div>
     <div id="notifyMsg"></div>
   </div>
 </section>
 
-</div><!-- .page -->
+</div>
 
 <footer>
   <div class="footer-logo">🌿 NEUROX</div>
-  <div>Projet en prototypage · Conçu par Ivan · 2025</div>
-  <div>Les grandes choses poussent lentement.</div>
+  <div data-i18n="footer_mid">Projet en prototypage · Conçu par Ivan · 2025</div>
+  <div data-i18n="footer_right">Les grandes choses poussent lentement.</div>
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    CONFIG
-══════════════════════════════════════════════════════ */
-const SUPABASE_URL = 'https://ppoqevwlmngxwuhnuipd.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwb3FldndsbW5neHd1aG51aXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzUxNTcsImV4cCI6MjA5NDM1MTE1N30.QJcHpmwWqoBXBlvAg3azAWl0jGUyQIiVmRviyBYFHD4';
+══════════════════════════════════════ */
+const SUPABASE_URL='https://ppoqevwlmngxwuhnuipd.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwb3FldndsbW5neHd1aG51aXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzUxNTcsImV4cCI6MjA5NDM1MTE1N30.QJcHpmwWqoBXBlvAg3azAWl0jGUyQIiVmRviyBYFHD4';
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════ */
+const LANGS = {
+  fr: {
+    flag:'🇫🇷', code:'FR',
+    nav_plant:'La plante', nav_features:'Fonctions', nav_device:'Appareil', nav_pricing:'Prix', nav_cta:'Planter ma graine',
+    hero_badge:'Phase prototype · 2025', hero_line1:'Focus.', hero_line2:'Naturellement.',
+    hero_tagline:'"Les grandes choses poussent lentement."',
+    counter_sub:'graines plantées', counter_live:'Mis à jour en temps réel', counter_soon:'Lancement bientôt',
+    hero_cta1:'Planter ma graine 🌱', hero_cta2:"Découvrir l'univers →",
+    m1:'Les grandes choses poussent lentement.', m2:'Never miss twice.', m3:'Focus. Naturellement.', m4:'Start. Build. Succeed.', m5:'Ta concentration est une plante.',
+    streak_tag:'Le système', streak_title:'Ta plante<br><em>vit avec toi.</em>',
+    streak_body:'Oublie les streaks stressants. NEUROX remplace les chiffres par quelque chose de vivant. Voici ce qui se passe selon tes jours de travail :',
+    s1_when:"AUJOURD'HUI — Tu travailles", s1_title:'Ta plante pousse 🌱', s1_desc:"Chaque session complétée fait grandir ta plante. Elle prend de la hauteur, développe de nouvelles feuilles, et rayonne.",
+    s2_when:'JOUR +1 — Sans travailler', s2_title:'Elle se fane un peu…', s2_desc:"Une légère pluie apparaît. Quelques feuilles tombent. La plante cesse de grandir mais reste en vie — il est encore temps de la sauver.", s2_quote:'"Même les plus grands arbres connaissent des jours de pluie."',
+    s3_when:'JOUR +2 — Toujours sans travailler', s3_title:'Elle s\'éteint. 🪵', s3_desc:"Deux jours sans focus. La plante s'éteint. Mais elle rejoint ton jardin des souvenirs — tes efforts ne disparaissent jamais.", s3_quote:'"Chaque forêt commence par une nouvelle pousse."',
+    s4_when:'TU REVIENS — Une nouvelle chance', s4_title:'Une nouvelle graine germe.', s4_desc:"Reprends une session et une nouvelle plante naît immédiatement. Chaque recommencement est une victoire, pas un échec.",
+    feat_tag:'Fonctionnalités', feat_title:'Tout ce qu\'il faut<br>pour <em>grandir.</em>',
+    f1_name:'Méthode Pomodoro', f1_txt:'25 min de focus, 5 min de pause. Personnalisable. Un rythme qui respecte ton cerveau.',
+    f2_name:'Blocage intelligent', f2_txt:"GO démarre et verrouille. J'AI FINI valide et récompense. SOS pour les vraies urgences.",
+    f3_name:'La plante vivante', f3_txt:"Pas de score, pas de flamme. Quelque chose de vivant qui te donne envie de revenir chaque jour.",
+    f4_name:'Jardin des souvenirs', f4_txt:"Chaque plante morte rejoint ton jardin. Tes efforts passés restent visibles pour toujours.",
+    f5_name:'Ambiances sonores', f5_txt:"Forêt, pluie, sons blancs, lo-fi. Lance directement depuis l'appareil physique.",
+    f6_name:'Éco-responsable', f6_txt:"ABS recyclé, silicone recyclé. Premium dans le design, responsable dans les matières.",
+    dev_tag:"L'appareil", dev_title:'Concret.<br><em>Physique.</em> Réel.',
+    dev_body:"L'appareil rend la concentration tangible. Ce n'est plus une app parmi d'autres — c'est un objet dédié.",
+    db1:"Démarre la session & active le focus", db2_lbl:"J'AI FINI", db2:"Valide & fait pousser la plante", db3_lbl:"MUSIQUE", db3:"Lance l'ambiance choisie dans l'app", db4:"Arrêt d'urgence — déblocage immédiat",
+    price_tag:'Tarifs', price_title:'Simple.<br><em>Accessible.</em>', price_badge:'BIENTÔT DISPONIBLE',
+    p1_name:'Appareil NEUROX', p1_desc:"Achat unique. Pas d'abonnement obligatoire.", p1_i1:'Boîtier compact & premium', p1_i2:'4 boutons physiques', p1_i3:'Plante virtuelle incluse', p1_i4:'Matériaux éco-responsables', p1_i5:'Compatible iOS & Android',
+    p2_name:'App Premium', p2_per:' €/mois', p2_desc:"En option. La version gratuite reste complète.", p2_i1:"IA d'analyse comportementale", p2_i2:'Statistiques avancées', p2_i3:'Thèmes & plantes exclusifs', p2_i4:'Ambiances musicales étendues', p2_i5:'Mémo-Kit & organisation',
+    notify_tag:'Rejoindre la liste', notify_title:'Créé par <em>Ivan,</em><br>14 ans.',
+    notify_sub:"J'ai conçu NEUROX parce que je voulais quelque chose qui me donne <strong>vraiment envie</strong> de travailler. Pas une app stressante — quelque chose de vivant.<br><br>Le prototype est sur SOLIDWORKS, bientôt imprimé au FABLAB de Dassault Systèmes.",
+    email_placeholder:'ton@email.com', notify_btn:'Planter ma graine 🌱',
+    modal_title:'Ta graine a germé !', modal_rank_txt:'Tu es le <strong id="modalRankLabel">—ème</strong><br>à rejoindre NEUROX',
+    modal_body:"Un email de confirmation t'attend 📬<br>On te prévient dès que NEUROX est prêt.", modal_btn:'Je fais pousser mon arbre 🌳',
+    footer_mid:'Projet en prototypage · Conçu par Ivan · 2025', footer_right:'Les grandes choses poussent lentement.',
+    err_email:'Entre un email valide 🌿', err_conn:'Connexion impossible. Réessaie.', err_generic:'Erreur — réessaie dans un instant.', already:'Tu es déjà dans le jardin 🌿', sending:'Plantation…'
+  },
+  en: {
+    flag:'🇬🇧', code:'EN',
+    nav_plant:'The plant', nav_features:'Features', nav_device:'Device', nav_pricing:'Pricing', nav_cta:'Plant my seed',
+    hero_badge:'Prototype phase · 2025', hero_line1:'Focus.', hero_line2:'Naturally.',
+    hero_tagline:'"Great things grow slowly."',
+    counter_sub:'seeds planted', counter_live:'Updated in real time', counter_soon:'Launching soon',
+    hero_cta1:'Plant my seed 🌱', hero_cta2:'Discover the universe →',
+    m1:'Great things grow slowly.', m2:'Never miss twice.', m3:'Focus. Naturally.', m4:'Start. Build. Succeed.', m5:'Your focus is a plant.',
+    streak_tag:'The system', streak_title:'Your plant<br><em>lives with you.</em>',
+    streak_body:'Forget stressful streaks. NEUROX replaces numbers with something alive. Here is what happens depending on your work days:',
+    s1_when:'TODAY — You work', s1_title:'Your plant grows 🌱', s1_desc:'Every completed session makes your plant grow. It gains height, develops new leaves, and glows.',
+    s2_when:'DAY +1 — Without working', s2_title:'It wilts a little…', s2_desc:"A light rain appears. Some leaves fall. The plant stops growing but stays alive — there's still time to save it.", s2_quote:'"Even the greatest trees have rainy days."',
+    s3_when:'DAY +2 — Still without working', s3_title:'It dies. 🪵', s3_desc:"Two days without focus. The plant fades. But it joins your memory garden — your efforts never disappear.", s3_quote:'"Every forest starts with a new sprout."',
+    s4_when:'YOU RETURN — A new chance', s4_title:'A new seed sprouts.', s4_desc:"Start a session and a new plant is born immediately. Every restart is a victory, not a failure.",
+    feat_tag:'Features', feat_title:'Everything you need<br>to <em>grow.</em>',
+    f1_name:'Pomodoro method', f1_txt:'25 min focus, 5 min break. Customizable. A rhythm that respects your brain.',
+    f2_name:'Smart blocking', f2_txt:'GO starts and locks. DONE validates and rewards. SOS for real emergencies only.',
+    f3_name:'The living plant', f3_txt:'No score, no flame. Something alive that makes you want to come back every day.',
+    f4_name:'Memory garden', f4_txt:'Every dead plant joins your garden. Your past efforts remain visible forever.',
+    f5_name:'Sound atmospheres', f5_txt:'Forest, rain, white noise, lo-fi. Launch directly from the physical device.',
+    f6_name:'Eco-responsible', f6_txt:'Recycled ABS, recycled silicone. Premium design, responsible materials.',
+    dev_tag:'The device', dev_title:'Concrete.<br><em>Physical.</em> Real.',
+    dev_body:"The device makes concentration tangible. It's no longer just another app — it's a dedicated object.",
+    db1:'Starts session & activates focus', db2_lbl:'DONE', db2:'Validates & grows the plant', db3_lbl:'MUSIC', db3:'Launches chosen atmosphere from app', db4:'Emergency stop — immediate unlock',
+    price_tag:'Pricing', price_title:'Simple.<br><em>Accessible.</em>', price_badge:'COMING SOON',
+    p1_name:'NEUROX Device', p1_desc:'One-time purchase. No required subscription.', p1_i1:'Compact & premium case', p1_i2:'4 physical buttons', p1_i3:'Virtual plant included', p1_i4:'Eco-responsible materials', p1_i5:'iOS & Android compatible',
+    p2_name:'Premium App', p2_per:' €/month', p2_desc:'Optional. The free version stays complete.', p2_i1:'Behavioral AI analysis', p2_i2:'Advanced statistics', p2_i3:'Exclusive themes & plants', p2_i4:'Extended music library', p2_i5:'Memo-Kit & organization',
+    notify_tag:'Join the list', notify_title:'Created by <em>Ivan,</em><br>age 14.',
+    notify_sub:"I designed NEUROX because I wanted something that <strong>actually makes me want</strong> to work. Not a stressful app — something alive.<br><br>The prototype is on SOLIDWORKS, soon printed at the Dassault Systèmes FABLAB.",
+    email_placeholder:'your@email.com', notify_btn:'Plant my seed 🌱',
+    modal_title:'Your seed sprouted!', modal_rank_txt:'You are the <strong id="modalRankLabel">—th</strong><br>to join NEUROX',
+    modal_body:"A confirmation email is waiting for you 📬<br>We'll let you know as soon as NEUROX is ready.", modal_btn:'I will grow my tree 🌳',
+    footer_mid:'Prototype in progress · Created by Ivan · 2025', footer_right:'Great things grow slowly.',
+    err_email:'Enter a valid email 🌿', err_conn:'Connection failed. Please try again.', err_generic:'Error — please try again.', already:'You are already in the garden 🌿', sending:'Planting…'
+  },
+  es: {
+    flag:'🇪🇸', code:'ES',
+    nav_plant:'La planta', nav_features:'Funciones', nav_device:'Dispositivo', nav_pricing:'Precios', nav_cta:'Plantar mi semilla',
+    hero_badge:'Fase prototipo · 2025', hero_line1:'Enfoque.', hero_line2:'Naturalmente.',
+    hero_tagline:'"Las grandes cosas crecen lentamente."',
+    counter_sub:'semillas plantadas', counter_live:'Actualizado en tiempo real', counter_soon:'Lanzamiento pronto',
+    hero_cta1:'Plantar mi semilla 🌱', hero_cta2:'Descubrir el universo →',
+    m1:'Las grandes cosas crecen lentamente.', m2:'Nunca falles dos veces.', m3:'Enfoque. Naturalmente.', m4:'Empieza. Construye. Triunfa.', m5:'Tu concentración es una planta.',
+    streak_tag:'El sistema', streak_title:'Tu planta<br><em>vive contigo.</em>',
+    streak_body:'Olvida las rachas estresantes. NEUROX reemplaza los números con algo vivo. Esto es lo que ocurre según tus días de trabajo:',
+    s1_when:'HOY — Trabajas', s1_title:'Tu planta crece 🌱', s1_desc:'Cada sesión completada hace crecer tu planta. Gana altura, desarrolla nuevas hojas y brilla.',
+    s2_when:'DÍA +1 — Sin trabajar', s2_title:'Se marchita un poco…', s2_desc:"Aparece una lluvia suave. Algunas hojas caen. La planta deja de crecer pero sigue viva — todavía hay tiempo para salvarla.", s2_quote:'"Incluso los árboles más grandes conocen días de lluvia."',
+    s3_when:'DÍA +2 — Aún sin trabajar', s3_title:'Se apaga. 🪵', s3_desc:"Dos días sin concentrarse. La planta se apaga. Pero se une a tu jardín de recuerdos — tus esfuerzos nunca desaparecen.", s3_quote:'"Todo bosque comienza con un nuevo brote."',
+    s4_when:'VUELVES — Una nueva oportunidad', s4_title:'Una nueva semilla germina.', s4_desc:"Inicia una sesión y una nueva planta nace de inmediato. Cada nuevo comienzo es una victoria, no un fracaso.",
+    feat_tag:'Funcionalidades', feat_title:'Todo lo que necesitas<br>para <em>crecer.</em>',
+    f1_name:'Método Pomodoro', f1_txt:'25 min de enfoque, 5 min de descanso. Personalizable. Un ritmo que respeta tu cerebro.',
+    f2_name:'Bloqueo inteligente', f2_txt:'GO inicia y bloquea. LISTO valida y recompensa. SOS solo para emergencias reales.',
+    f3_name:'La planta viva', f3_txt:'Sin puntuación, sin llamas. Algo vivo que te da ganas de volver cada día.',
+    f4_name:'Jardín de recuerdos', f4_txt:'Cada planta muerta se une a tu jardín. Tus esfuerzos pasados permanecen visibles para siempre.',
+    f5_name:'Ambientes sonoros', f5_txt:'Bosque, lluvia, ruido blanco, lo-fi. Lanza directamente desde el dispositivo físico.',
+    f6_name:'Ecorresponsable', f6_txt:'ABS reciclado, silicona reciclada. Diseño premium, materiales responsables.',
+    dev_tag:'El dispositivo', dev_title:'Concreto.<br><em>Físico.</em> Real.',
+    dev_body:"El dispositivo hace tangible la concentración. Ya no es solo otra app — es un objeto dedicado.",
+    db1:'Inicia sesión y activa el enfoque', db2_lbl:'LISTO', db2:'Valida y hace crecer la planta', db3_lbl:'MÚSICA', db3:'Lanza el ambiente elegido en la app', db4:'Parada de emergencia — desbloqueo inmediato',
+    price_tag:'Precios', price_title:'Simple.<br><em>Accesible.</em>', price_badge:'PRÓXIMAMENTE',
+    p1_name:'Dispositivo NEUROX', p1_desc:'Compra única. Sin suscripción obligatoria.', p1_i1:'Carcasa compacta y premium', p1_i2:'4 botones físicos', p1_i3:'Planta virtual incluida', p1_i4:'Materiales ecorresponsables', p1_i5:'Compatible iOS y Android',
+    p2_name:'App Premium', p2_per:' €/mes', p2_desc:'Opcional. La versión gratuita sigue completa.', p2_i1:'IA de análisis conductual', p2_i2:'Estadísticas avanzadas', p2_i3:'Temas y plantas exclusivos', p2_i4:'Biblioteca musical ampliada', p2_i5:'Memo-Kit y organización',
+    notify_tag:'Unirse a la lista', notify_title:'Creado por <em>Ivan,</em><br>14 años.',
+    notify_sub:"Diseñé NEUROX porque quería algo que me diera <strong>verdaderas ganas</strong> de trabajar. No una app estresante — algo vivo.<br><br>El prototipo está en SOLIDWORKS, pronto impreso en el FABLAB de Dassault Systèmes.",
+    email_placeholder:'tu@email.com', notify_btn:'Plantar mi semilla 🌱',
+    modal_title:'¡Tu semilla germinó!', modal_rank_txt:'Eres el <strong id="modalRankLabel">—º</strong><br>en unirte a NEUROX',
+    modal_body:"Un email de confirmación te espera 📬<br>Te avisamos en cuanto NEUROX esté listo.", modal_btn:'Haré crecer mi árbol 🌳',
+    footer_mid:'Prototipo en curso · Creado por Ivan · 2025', footer_right:'Las grandes cosas crecen lentamente.',
+    err_email:'Introduce un email válido 🌿', err_conn:'Conexión imposible. Inténtalo de nuevo.', err_generic:'Error — inténtalo de nuevo.', already:'Ya estás en el jardín 🌿', sending:'Plantando…'
+  },
+  ru: {
+    flag:'🇷🇺', code:'РУ',
+    nav_plant:'Растение', nav_features:'Функции', nav_device:'Устройство', nav_pricing:'Цены', nav_cta:'Посадить семя',
+    hero_badge:'Фаза прототипа · 2025', hero_line1:'Фокус.', hero_line2:'Естественно.',
+    hero_tagline:'"Великие вещи растут медленно."',
+    counter_sub:'посаженных семян', counter_live:'Обновляется в реальном времени', counter_soon:'Скоро запуск',
+    hero_cta1:'Посадить моё семя 🌱', hero_cta2:'Открыть вселенную →',
+    m1:'Великие вещи растут медленно.', m2:'Никогда не пропускай дважды.', m3:'Фокус. Естественно.', m4:'Начни. Строй. Побеждай.', m5:'Твоя концентрация — это растение.',
+    streak_tag:'Система', streak_title:'Твоё растение<br><em>живёт с тобой.</em>',
+    streak_body:'Забудь о стрессовых стриках. NEUROX заменяет цифры чем-то живым. Вот что происходит в зависимости от твоих рабочих дней:',
+    s1_when:'СЕГОДНЯ — Ты работаешь', s1_title:'Твоё растение растёт 🌱', s1_desc:'Каждая завершённая сессия заставляет растение расти. Оно набирает высоту, развивает новые листья и сияет.',
+    s2_when:'ДЕНЬ +1 — Без работы', s2_title:'Оно немного вянет…', s2_desc:'Появляется лёгкий дождь. Несколько листьев опадает. Растение перестаёт расти, но остаётся живым — ещё есть время его спасти.', s2_quote:'"Даже самые большие деревья знают дождливые дни."',
+    s3_when:'ДЕНЬ +2 — Всё ещё без работы', s3_title:'Оно гаснет. 🪵', s3_desc:'Два дня без фокуса. Растение угасает. Но оно переходит в твой сад воспоминаний — твои усилия никогда не исчезают.', s3_quote:'"Каждый лес начинается с нового ростка."',
+    s4_when:'ТЫ ВОЗВРАЩАЕШЬСЯ — Новый шанс', s4_title:'Новое семя прорастает.', s4_desc:'Начни сессию, и новое растение родится немедленно. Каждое новое начало — победа, а не поражение.',
+    feat_tag:'Функции', feat_title:'Всё необходимое<br>для <em>роста.</em>',
+    f1_name:'Метод Помодоро', f1_txt:'25 мин фокуса, 5 мин перерыва. Настраиваемо. Ритм, уважающий твой мозг.',
+    f2_name:'Умная блокировка', f2_txt:'GO запускает и блокирует. ГОТОВО подтверждает и вознаграждает. SOS только для реальных срочных ситуаций.',
+    f3_name:'Живое растение', f3_txt:'Никаких очков, никаких огней. Что-то живое, что заставляет тебя возвращаться каждый день.',
+    f4_name:'Сад воспоминаний', f4_txt:'Каждое мёртвое растение присоединяется к твоему саду. Твои прошлые усилия остаются видимыми навсегда.',
+    f5_name:'Звуковые атмосферы', f5_txt:'Лес, дождь, белый шум, lo-fi. Запускай прямо с физического устройства.',
+    f6_name:'Экоответственность', f6_txt:'Переработанный ABS, переработанный силикон. Премиальный дизайн, ответственные материалы.',
+    dev_tag:'Устройство', dev_title:'Конкретное.<br><em>Физическое.</em> Реальное.',
+    dev_body:'Устройство делает концентрацию ощутимой. Это больше не просто приложение — это специальный объект.',
+    db1:'Запускает сессию и активирует фокус', db2_lbl:'ГОТОВО', db2:'Подтверждает и выращивает растение', db3_lbl:'МУЗЫКА', db3:'Запускает выбранную атмосферу в приложении', db4:'Аварийная остановка — немедленная разблокировка',
+    price_tag:'Цены', price_title:'Просто.<br><em>Доступно.</em>', price_badge:'СКОРО',
+    p1_name:'Устройство NEUROX', p1_desc:'Единовременная покупка. Никаких обязательных подписок.', p1_i1:'Компактный и премиальный корпус', p1_i2:'4 физические кнопки', p1_i3:'Виртуальное растение включено', p1_i4:'Экоответственные материалы', p1_i5:'Совместимо с iOS и Android',
+    p2_name:'Премиум приложение', p2_per:' €/мес', p2_desc:'Опционально. Бесплатная версия остаётся полноценной.', p2_i1:'ИИ-анализ поведения', p2_i2:'Расширенная статистика', p2_i3:'Эксклюзивные темы и растения', p2_i4:'Расширенная музыкальная библиотека', p2_i5:'Memo-Kit и организация',
+    notify_tag:'Присоединиться к списку', notify_title:'Создано <em>Иваном,</em><br>14 лет.',
+    notify_sub:'Я разработал NEUROX, потому что хотел что-то, что <strong>действительно даёт желание</strong> работать. Не стрессовое приложение — что-то живое.<br><br>Прототип на SOLIDWORKS, скоро будет напечатан в FABLAB Dassault Systèmes.',
+    email_placeholder:'твой@email.com', notify_btn:'Посадить моё семя 🌱',
+    modal_title:'Твоё семя проросло!', modal_rank_txt:'Ты <strong id="modalRankLabel">—й</strong><br>кто присоединился к NEUROX',
+    modal_body:'Письмо с подтверждением ждёт тебя 📬<br>Мы оповестим тебя, как только NEUROX будет готов.', modal_btn:'Я выращу своё дерево 🌳',
+    footer_mid:'Прототип в разработке · Создано Иваном · 2025', footer_right:'Великие вещи растут медленно.',
+    err_email:'Введи корректный email 🌿', err_conn:'Нет соединения. Попробуй снова.', err_generic:'Ошибка — попробуй снова.', already:'Ты уже в саду 🌿', sending:'Посадка…'
+  },
+  zh: {
+    flag:'🇨🇳', code:'中文',
+    nav_plant:'植物', nav_features:'功能', nav_device:'设备', nav_pricing:'价格', nav_cta:'种下我的种子',
+    hero_badge:'原型阶段 · 2025', hero_line1:'专注。', hero_line2:'自然地。',
+    hero_tagline:'"伟大的事物缓慢生长。"',
+    counter_sub:'已种下的种子', counter_live:'实时更新', counter_soon:'即将发布',
+    hero_cta1:'种下我的种子 🌱', hero_cta2:'探索宇宙 →',
+    m1:'伟大的事物缓慢生长。', m2:'永不连续错过两次。', m3:'专注。自然地。', m4:'开始。构建。成功。', m5:'你的专注力是一株植物。',
+    streak_tag:'系统', streak_title:'你的植物<br><em>与你同在。</em>',
+    streak_body:'忘记有压力的连续记录。NEUROX用有生命的东西替代数字。以下是根据你的工作天数会发生的事情：',
+    s1_when:'今天 — 你在工作', s1_title:'你的植物在生长 🌱', s1_desc:'每完成一个工作阶段，你的植物就会生长。它变高，长出新叶，焕发光彩。',
+    s2_when:'第+1天 — 没有工作', s2_title:'它有点枯萎了…', s2_desc:'出现轻微的雨水。一些叶子飘落。植物停止生长但仍存活 — 还有时间拯救它。', s2_quote:'"即使是最伟大的树木也有下雨的日子。"',
+    s3_when:'第+2天 — 依然没有工作', s3_title:'它熄灭了。🪵', s3_desc:'两天没有专注。植物熄灭了。但它加入了你的记忆花园 — 你的努力永远不会消失。', s3_quote:'"每片森林都从一株新芽开始。"',
+    s4_when:'你回来了 — 新的机会', s4_title:'一颗新种子萌芽了。', s4_desc:'开始一个工作阶段，新植物立即诞生。每次重新开始都是胜利，而不是失败。',
+    feat_tag:'功能', feat_title:'一切你需要的<br>来<em>成长。</em>',
+    f1_name:'番茄工作法', f1_txt:'25分钟专注，5分钟休息。可定制。尊重大脑的节奏。',
+    f2_name:'智能屏蔽', f2_txt:'GO启动并锁定。完成验证并奖励。SOS仅用于真正的紧急情况。',
+    f3_name:'活植物', f3_txt:'没有分数，没有火焰。一个有生命的东西，让你每天都想回来。',
+    f4_name:'记忆花园', f4_txt:'每株死去的植物都加入你的花园。你过去的努力永远可见。',
+    f5_name:'音效氛围', f5_txt:'森林、雨声、白噪音、lo-fi。直接从物理设备启动。',
+    f6_name:'环保负责', f6_txt:'再生ABS，再生硅胶。优质设计，负责任的材料。',
+    dev_tag:'设备', dev_title:'具体。<br><em>实体。</em> 真实。',
+    dev_body:'设备让专注变得有形可感。它不再只是另一个应用 — 而是一个专用物件。',
+    db1:'启动工作阶段并激活专注', db2_lbl:'完成', db2:'验证并使植物生长', db3_lbl:'音乐', db3:'在应用中启动所选氛围', db4:'紧急停止 — 立即解锁',
+    price_tag:'价格', price_title:'简单。<br><em>实惠。</em>', price_badge:'即将推出',
+    p1_name:'NEUROX 设备', p1_desc:'一次性购买。无需强制订阅。', p1_i1:'紧凑且高端的外壳', p1_i2:'4个物理按钮', p1_i3:'包含虚拟植物', p1_i4:'环保负责任的材料', p1_i5:'兼容iOS和Android',
+    p2_name:'高级应用', p2_per:' €/月', p2_desc:'可选。免费版仍然完整。', p2_i1:'行为AI分析', p2_i2:'高级统计', p2_i3:'专属主题和植物', p2_i4:'扩展音乐库', p2_i5:'备忘套件和组织',
+    notify_tag:'加入列表', notify_title:'由<em>伊万</em>创建，<br>14岁。',
+    notify_sub:'我设计了NEUROX，因为我想要一些<strong>真正让我想要工作</strong>的东西。不是有压力的应用 — 而是有生命的东西。<br><br>原型正在SOLIDWORKS上，即将在达索系统FABLAB打印。',
+    email_placeholder:'你的@email.com', notify_btn:'种下我的种子 🌱',
+    modal_title:'你的种子发芽了！', modal_rank_txt:'你是第 <strong id="modalRankLabel">—</strong> 个<br>加入NEUROX的人',
+    modal_body:'确认邮件正在等你 📬<br>NEUROX准备好后我们会通知你。', modal_btn:'我要让我的树生长 🌳',
+    footer_mid:'原型进行中 · 由伊万创建 · 2025', footer_right:'伟大的事物缓慢生长。',
+    err_email:'请输入有效的电子邮件 🌿', err_conn:'连接失败。请重试。', err_generic:'错误 — 请重试。', already:'你已经在花园里了 🌿', sending:'种植中…'
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.getElementById('langFlag').textContent = t.flag;
+  document.getElementById('langCode').textContent = t.code;
+  // update all options
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.getAttribute('onclick').includes(`'${lang}'`));
+  });
+  // translate all [data-i18n]
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // translate placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  toggleLang(true); // close dropdown
+}
+
+function toggleLang(forceClose) {
+  const dd = document.getElementById('langDropdown');
+  if (forceClose === true) { dd.classList.remove('open'); return; }
+  dd.classList.toggle('open');
+}
+
+// Close lang dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.lang-selector')) {
+    document.getElementById('langDropdown').classList.remove('open');
+  }
+});
+
+/* ══════════════════════════════════════
    CURSOR
-══════════════════════════════════════════════════════ */
+══════════════════════════════════════ */
 const cursorEl = document.getElementById('cursor');
 const ringEl = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorEl.style.left = mx+'px'; cursorEl.style.top = my+'px'; });
-function animRing() {
-  rx += (mx - rx) * .12; ry += (my - ry) * .12;
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursorEl.style.left = mx+'px'; cursorEl.style.top = my+'px';
+});
+(function animRing() {
+  rx += (mx-rx)*.12; ry += (my-ry)*.12;
   ringEl.style.left = rx+'px'; ringEl.style.top = ry+'px';
   requestAnimationFrame(animRing);
-}
-animRing();
+})();
 
-/* ══════════════════════════════════════════════════════
-   LIVE PLANT CANVAS
-   — draws an enormous procedural tree that grows as you scroll
-══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   PLANT CANVAS
+══════════════════════════════════════ */
 const canvas = document.getElementById('plantCanvas');
 const ctx = canvas.getContext('2d');
+function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', () => { resize(); drawPlant(); });
+function getScroll(){ const m=document.documentElement.scrollHeight-window.innerHeight; return m>0?Math.min(window.scrollY/m,1):0; }
 
-// Scroll progress 0→1 over full page
-function getScrollProg() {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  return max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-}
-
-// ── Procedural recursive tree ──
-function branch(ctx, x, y, angle, length, depth, maxDepth, alpha, col) {
-  if (depth > maxDepth || length < 3) return;
-  const x2 = x + Math.cos(angle) * length;
-  const y2 = y - Math.sin(angle) * length;
-  const thick = Math.max(.4, (maxDepth - depth + 1) * .8);
-
+function branch(x,y,angle,len,depth,maxD,alpha,hue) {
+  if(depth>maxD||len<3) return;
+  const x2=x+Math.cos(angle)*len, y2=y-Math.sin(angle)*len;
   ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.strokeStyle = col;
-  ctx.lineWidth = thick;
-  ctx.lineCap = 'round';
+  ctx.globalAlpha=alpha;
+  ctx.strokeStyle=`hsl(${hue},${40+depth*3}%,${20+depth*5}%)`;
+  ctx.lineWidth=Math.max(.4,(maxD-depth+1)*.85);
+  ctx.lineCap='round';
   ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.quadraticCurveTo(
-    x + Math.cos(angle + .2) * length * .5,
-    y - Math.sin(angle + .2) * length * .5,
-    x2, y2
-  );
+  ctx.moveTo(x,y);
+  ctx.quadraticCurveTo(x+Math.cos(angle+.18)*len*.5, y-Math.sin(angle+.18)*len*.5, x2, y2);
   ctx.stroke();
+  if(depth>=maxD-1&&len>5){
+    const lr=5+Math.random()*11;
+    ctx.globalAlpha=alpha*.65;
+    ctx.fillStyle=`hsl(${105+depth*6},${50+depth*4}%,${30+depth*5}%)`;
+    ctx.beginPath();
+    ctx.ellipse(x2,y2,lr,lr*.5,angle-Math.PI/2,0,Math.PI*2);
+    ctx.fill();
+  }
   ctx.restore();
-
-  // leaves at tips
-  if (depth >= maxDepth - 1 && length > 6) {
-    const lr = 6 + Math.random() * 10;
-    ctx.save();
-    ctx.globalAlpha = alpha * .7;
-    ctx.fillStyle = `hsl(${110 + depth*5},${55 + depth*3}%,${35 + depth*4}%)`;
-    ctx.beginPath();
-    ctx.ellipse(x2, y2, lr, lr * .55, angle - Math.PI/2, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  const spread = .42 + depth * .04;
-  const lenRatio = .68 + Math.random() * .06;
-  branch(ctx, x2, y2, angle + spread, length * lenRatio, depth+1, maxDepth, alpha*.92, col);
-  branch(ctx, x2, y2, angle - spread, length * lenRatio * .92, depth+1, maxDepth, alpha*.9, col);
-  if (depth < 3) branch(ctx, x2, y2, angle + .05, length * .5, depth+3, maxDepth, alpha*.5, col);
+  const sp=.4+depth*.05, lr=.67+Math.random()*.07;
+  branch(x2,y2,angle+sp,len*lr,depth+1,maxD,alpha*.92,hue);
+  branch(x2,y2,angle-sp,len*lr*.92,depth+1,maxD,alpha*.9,hue+5);
+  if(depth<3) branch(x2,y2,angle+.05,len*.48,depth+3,maxD,alpha*.5,hue);
 }
 
-let lastProg = -1;
-function drawPlant(forceRedraw) {
-  const prog = getScrollProg();
-  if (!forceRedraw && Math.abs(prog - lastProg) < .001) return;
-  lastProg = prog;
-
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
-
-  // ── ambient fog ──
-  const fog = ctx.createRadialGradient(W*.5, H, 0, W*.5, H, H*.8);
-  fog.addColorStop(0, 'rgba(8,20,8,.25)');
-  fog.addColorStop(1, 'transparent');
-  ctx.fillStyle = fog;
-  ctx.fillRect(0, 0, W, H);
-
-  // ── ground glow ──
-  const gnd = ctx.createRadialGradient(W*.5, H+20, 0, W*.5, H+20, W*.5);
-  gnd.addColorStop(0, 'rgba(60,130,40,.18)');
-  gnd.addColorStop(1, 'transparent');
-  ctx.fillStyle = gnd;
-  ctx.fillRect(0, 0, W, H);
-
-  // tree growth: prog controls how tall / how many branches
-  const maxDepth = Math.round(2 + prog * 8); // 2→10 branches deep
-  const trunkH = H * .18 + H * .68 * prog; // trunk grows from 18% to 86% of screen height
-  const trunkX = W * .5;
-  const trunkY = H + 10;
-
-  // multiple angle seeds for organic feel
-  const seeds = [
-    { angle: Math.PI/2, weight: 1 },
-    { angle: Math.PI/2 + .08, weight: .7 },
-    { angle: Math.PI/2 - .08, weight: .7 },
-  ];
-
-  seeds.forEach(s => {
-    const len = trunkH * s.weight;
-    const trunkColor = `hsl(30,${25 + prog*15}%,${18 + prog*10}%)`;
-    branch(ctx, trunkX, trunkY, s.angle, len, 0, maxDepth, s.weight * (.4 + prog*.6), trunkColor);
+let lastP=-1;
+function drawPlant(){
+  const p=getScroll();
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  // ambient
+  const fog=ctx.createRadialGradient(W*.5,H,0,W*.5,H,H*.75);
+  fog.addColorStop(0,'rgba(6,18,6,.3)'); fog.addColorStop(1,'transparent');
+  ctx.fillStyle=fog; ctx.fillRect(0,0,W,H);
+  const gnd=ctx.createRadialGradient(W*.5,H+20,0,W*.5,H+20,W*.55);
+  gnd.addColorStop(0,'rgba(50,120,30,.2)'); gnd.addColorStop(1,'transparent');
+  ctx.fillStyle=gnd; ctx.fillRect(0,0,W,H);
+  // tree
+  const maxD=Math.round(2+p*9);
+  const tH=H*.18+H*.7*p;
+  [{a:Math.PI/2,w:1},{a:Math.PI/2+.09,w:.65},{a:Math.PI/2-.09,w:.65}].forEach(s=>{
+    branch(W*.5, H+10, s.a, tH*s.w, 0, maxD, s.w*(.35+p*.65), 95+p*15);
   });
-
-  // ── particle fireflies ──
-  const t = Date.now() * .001;
-  const nParticles = Math.floor(prog * 30);
-  for (let i = 0; i < nParticles; i++) {
-    const px = W * (.2 + .6 * ((i * .37 + t * .08) % 1));
-    const py = H * (.1 + .8 * ((i * .61 + t * .05) % 1));
-    const a = .3 + .5 * Math.abs(Math.sin(t + i));
-    ctx.save();
-    ctx.globalAlpha = a * prog;
-    ctx.fillStyle = '#b8e8a0';
-    ctx.shadowColor = '#7ecb6a';
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-    ctx.arc(px, py, 1.5, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
+  // fireflies
+  const t=Date.now()*.001, n=Math.floor(p*35);
+  for(let i=0;i<n;i++){
+    const px=W*(.15+.7*((i*.37+t*.08)%1)), py=H*(.08+.82*((i*.61+t*.05)%1));
+    const a=.25+.55*Math.abs(Math.sin(t+i));
+    ctx.save(); ctx.globalAlpha=a*p; ctx.fillStyle='#b8e8a0'; ctx.shadowColor='#7ecb6a'; ctx.shadowBlur=10;
+    ctx.beginPath(); ctx.arc(px,py,1.5,0,Math.PI*2); ctx.fill(); ctx.restore();
   }
+  lastP=p;
 }
+(function loop(){ drawPlant(); requestAnimationFrame(loop); })();
 
-// animate continuously for fireflies + smooth scroll
-let rafId;
-function loop() {
-  drawPlant();
-  rafId = requestAnimationFrame(loop);
-}
-loop();
-
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    NAV
-══════════════════════════════════════════════════════ */
-const nav = document.getElementById('mainNav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('solid', window.scrollY > 60);
-}, { passive: true });
+══════════════════════════════════════ */
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',window.scrollY>60),{passive:true});
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    TIMER
-══════════════════════════════════════════════════════ */
-const POMO = 25*60; let tSecs = POMO;
-const timerEls = document.querySelectorAll('.js-timer');
+══════════════════════════════════════ */
+const POMO=25*60; let tSecs=POMO;
+const timerEls=document.querySelectorAll('.js-timer');
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 function tick(){timerEls.forEach(el=>el.textContent=fmt(tSecs));if(--tSecs<0)tSecs=POMO;}
 tick(); setInterval(tick,1000);
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    SCROLL REVEAL
-══════════════════════════════════════════════════════ */
-const srObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');srObs.unobserve(e.target);}});
+══════════════════════════════════════ */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
 },{threshold:.08});
-document.querySelectorAll('.sr,.sr-l,.sr-r,.sr-s,.stag').forEach(el=>srObs.observe(el));
+document.querySelectorAll('.sr,.sr-l,.sr-r,.sr-s,.stag').forEach(el=>obs.observe(el));
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    LIVE COUNTER
-══════════════════════════════════════════════════════ */
-let curCount = 0;
+══════════════════════════════════════ */
+let curCount=0;
 async function fetchCount(){
   try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=email`,{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=email`,{
       headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'count=exact','Range':'0-0'}
     });
-    const range = res.headers.get('Content-Range')||'';
-    const m = range.match(/\/([0-9]+)/);
+    const m=(res.headers.get('Content-Range')||'').match(/\/([0-9]+)/);
     if(m){const n=parseInt(m[1],10);animCount(curCount,n,document.getElementById('lcNum'));curCount=n;}
   }catch(_){}
 }
 function animCount(from,to,el){
   if(!el)return;
   const dur=1400,t0=performance.now();
-  function step(now){
+  (function step(now){
     const p=Math.min((now-t0)/dur,1),e=1-Math.pow(2,-10*p);
     el.textContent=Math.round(from+(to-from)*e);
-    if(p<1)requestAnimationFrame(step);else el.textContent=to;
-  }
-  requestAnimationFrame(step);
+    if(p<1)requestAnimationFrame(step); else el.textContent=to;
+  })(performance.now());
 }
 fetchCount(); setInterval(fetchCount,30000);
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    CONFETTI
-══════════════════════════════════════════════════════ */
+══════════════════════════════════════ */
 const cs=document.createElement('style');
 cs.textContent='@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(340px) rotate(540deg);opacity:0}}';
 document.head.appendChild(cs);
@@ -942,21 +847,21 @@ function confetti(){
   const c=document.getElementById('confettiLayer'); c.innerHTML='';
   ['#7ecb6a','#b8e8a0','#4a9a38','#c4a03a','#e8f0e0','#2a5a1a'].forEach((col,ci)=>{
     for(let i=0;i<8;i++){
-      const el=document.createElement('div');
-      const sz=5+Math.random()*9;
+      const el=document.createElement('div'),sz=5+Math.random()*9;
       el.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;background:${col};border-radius:${Math.random()>.5?'50%':'2px'};left:${Math.random()*100}%;top:-12px;opacity:0;animation:cf ${1.1+Math.random()*1.2}s ${ci*.06+Math.random()*.5}s ease-in forwards`;
       c.appendChild(el);
     }
   });
 }
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    MODAL
-══════════════════════════════════════════════════════ */
+══════════════════════════════════════ */
 function openModal(email,rank){
+  const t=LANGS[currentLang];
   document.getElementById('modalEmail').textContent=email;
   document.getElementById('modalRankNum').textContent='#'+rank;
-  document.getElementById('modalRankLabel').textContent=rank+(rank===1?'er':'ème');
+  document.getElementById('modalRankLabel').textContent=rank+(currentLang==='fr'?(rank===1?'er':'ème'):currentLang==='en'?(rank===1?'st':rank===2?'nd':rank===3?'rd':'th'):(rank+''));
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
   confetti();
@@ -968,17 +873,18 @@ function closeModal(){
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-/* ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════
    SUBMIT
-══════════════════════════════════════════════════════ */
+══════════════════════════════════════ */
 async function handleNotify(){
+  const t=LANGS[currentLang];
   const input=document.getElementById('emailInput');
   const v=input.value.trim();
   const msg=document.getElementById('notifyMsg');
   const btn=document.getElementById('notifyBtn');
-  if(!v||!v.includes('@')||!v.includes('.')){msg.style.color='#c47a3a';msg.textContent='Entre un email valide 🌿';return;}
-  btn.disabled=true;btn.textContent='Plantation…';
-  msg.style.color='rgba(232,240,224,.4)';msg.textContent='';
+  if(!v||!v.includes('@')||!v.includes('.')){msg.style.color='#c47a3a';msg.textContent=t.err_email;return;}
+  btn.disabled=true; btn.textContent=t.sending;
+  msg.style.color='rgba(232,240,224,.4)'; msg.textContent='';
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/waitlist`,{
       method:'POST',
@@ -986,20 +892,17 @@ async function handleNotify(){
       body:JSON.stringify({email:v,createdAt:new Date().toISOString()})
     });
     if(res.ok||res.status===201){
-      fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`,{
-        method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},
-        body:JSON.stringify({email:v})
-      }).catch(()=>{});
+      fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},body:JSON.stringify({email:v})}).catch(()=>{});
       await fetchCount();
       openModal(v,curCount);
-      input.value='';msg.textContent='';
+      input.value=''; msg.textContent='';
     }else{
       const err=await res.json().catch(()=>({}));
-      if(err.code==='23505'){msg.style.color='#7ecb6a';msg.textContent='Tu es déjà dans le jardin 🌿';}
-      else{msg.style.color='#c47a3a';msg.textContent='Erreur — réessaie dans un instant.';}
+      if(err.code==='23505'){msg.style.color='#7ecb6a';msg.textContent=t.already;}
+      else{msg.style.color='#c47a3a';msg.textContent=t.err_generic;}
     }
-  }catch(e){msg.style.color='#c47a3a';msg.textContent='Connexion impossible. Réessaie.';}
-  finally{btn.disabled=false;btn.textContent='Planter ma graine 🌱';}
+  }catch(e){msg.style.color='#c47a3a';msg.textContent=t.err_conn;}
+  finally{btn.disabled=false;btn.textContent=t.notify_btn;}
 }
 document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key==='Enter')handleNotify();});
 </script>
