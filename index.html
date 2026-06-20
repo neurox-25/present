@@ -165,6 +165,35 @@ nav ul a:hover{color:#a8d8c0}
 
 /* ── PRICING ── */
 .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.price-grid3{display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:18px;margin-top:32px;align-items:stretch}
+.featured-tier{transform:scale(1.04);z-index:2;box-shadow:0 30px 70px rgba(59,111,212,.25),0 0 0 1px rgba(59,111,212,.3)}
+.featured-tier:hover{transform:scale(1.04) translateY(-5px)}
+.featured-ribbon{position:absolute;top:0;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--bleu),var(--violet));color:#fff;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;padding:6px 18px;border-radius:0 0 12px 12px;white-space:nowrap;box-shadow:0 4px 14px rgba(59,111,212,.3)}
+.price-card.featured-tier{padding-top:50px}
+.value-hint{margin-top:18px;padding-top:16px;border-top:1px solid rgba(59,111,212,.15);font-size:.78rem;color:var(--bleu);line-height:1.5;font-weight:400}
+.founders-tier{border-color:rgba(124,77,187,.25);background:linear-gradient(160deg,rgba(124,77,187,.07),rgba(77,184,122,.02))}
+.founders-tier:hover{border-color:rgba(124,77,187,.45)}
+.founders-tier .price-amount{background:linear-gradient(135deg,var(--violet),#a878d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.founders-badge{color:var(--violet)!important;border-color:rgba(124,77,187,.35)!important}
+@media(max-width:900px){
+  .price-grid3{grid-template-columns:1fr}
+  .featured-tier{transform:none;order:-1}
+  .featured-tier:hover{transform:translateY(-5px)}
+}
+.premium-app-divider{display:flex;align-items:center;gap:16px;margin:40px 0 20px;text-align:center;justify-content:center}
+.premium-app-divider::before,.premium-app-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(124,77,187,.25),transparent);max-width:120px}
+.premium-app-divider span{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.12em;color:var(--violet);text-transform:uppercase;white-space:nowrap}
+.premium-app-card{display:flex;align-items:center;gap:20px;border:1px solid rgba(124,77,187,.18);border-radius:18px;padding:22px 28px;background:linear-gradient(135deg,rgba(124,77,187,.05),rgba(59,111,212,.04));transition:border-color .3s,transform .3s}
+.premium-app-card:hover{border-color:rgba(124,77,187,.35);transform:translateY(-3px)}
+.premium-app-icon{font-size:1.8rem;flex-shrink:0;width:52px;height:52px;border-radius:14px;background:rgba(124,77,187,.1);display:flex;align-items:center;justify-content:center}
+.premium-app-info{flex:1}
+.premium-app-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--blanc);margin-bottom:4px}
+.premium-app-desc{font-size:.8rem;color:rgba(240,242,248,.45);line-height:1.5}
+.premium-app-price{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--violet);flex-shrink:0;white-space:nowrap}
+.premium-app-price span{font-size:.75rem;color:rgba(240,242,248,.4);font-family:'DM Mono',monospace;font-weight:400;margin-left:3px}
+@media(max-width:640px){
+  .premium-app-card{flex-direction:column;text-align:center;gap:12px}
+}
 .price-card{border:1px solid rgba(77,184,122,.1);border-radius:22px;padding:36px 30px;background:rgba(77,184,122,.03);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
 .price-card:hover{transform:translateY(-5px);border-color:rgba(59,111,212,.3)}
 .price-card.feat{border-color:rgba(59,111,212,.3);background:rgba(59,111,212,.06)}
@@ -262,7 +291,7 @@ footer{border-top:1px solid rgba(59,111,212,.1);padding:32px 56px;display:flex;j
       <div class="modal-rank-num" id="modalRankNum">#—</div>
       <div class="modal-rank-txt" data-i18n="modal_rank_txt">Tu es le <strong id="modalRankLabel">—ème</strong><br>à rejoindre NEUROX</div>
     </div>
-    <div class="modal-body" data-i18n="modal_body">On te prévient dès que NEUROX est prêt.</div>
+    <div class="modal-body" data-i18n="modal_body">Un email de confirmation t'attend 📬<br>On te prévient dès que NEUROX est prêt.</div>
     <button class="modal-btn" onclick="closeModal()" data-i18n="modal_btn">Je fais pousser mon arbre 🌳</button>
   </div>
 </div>
@@ -441,37 +470,66 @@ footer{border-top:1px solid rgba(59,111,212,.1);padding:32px 56px;display:flex;j
 
 <!-- PRICING -->
 <section class="content-section" id="pricing" style="justify-content:center">
-  <div class="glass-card-wide sr" style="max-width:780px">
+  <div class="glass-card-wide sr" style="max-width:1040px">
     <span class="section-tag" data-i18n="price_tag">Tarifs</span>
-    <h2 class="section-title" data-i18n="price_title">Simple.<br><em>Accessible.</em></h2>
-    <div class="price-grid stag">
-      <div class="price-card feat">
-        <div class="price-badge" data-i18n="price_badge">BIENTÔT DISPONIBLE</div>
-        <div class="price-name" data-i18n="p1_name">Appareil NEUROX</div>
-        <div class="price-amount">25<span> €</span></div>
-        <div class="price-desc" data-i18n="p1_desc">Achat unique. Pas d'abonnement obligatoire.</div>
-        <div class="price-list">
-          <div class="price-item" data-i18n="p1_i1">Boîtier compact & premium</div>
-          <div class="price-item" data-i18n="p1_i2">4 boutons physiques</div>
-          <div class="price-item" data-i18n="p1_i3">Plante virtuelle incluse</div>
-          <div class="price-item" data-i18n="p1_i4">Matériaux éco-responsables</div>
-          <div class="price-item" data-i18n="p1_i5">Compatible iOS & Android</div>
-        </div>
-      </div>
+    <h2 class="section-title" data-i18n="price_title">Trois façons<br>de <em>commencer.</em></h2>
+    <div class="price-grid3 stag">
+
       <div class="price-card">
         <div class="price-badge" data-i18n="price_badge">BIENTÔT DISPONIBLE</div>
-        <div class="price-name" data-i18n="p2_name">App Premium</div>
-        <div class="price-amount">1,99<span data-i18n="p2_per"> €/mois</span></div>
-        <div class="price-desc" data-i18n="p2_desc">En option. La version gratuite reste complète.</div>
+        <div class="price-name" data-i18n="t1_name">Essential</div>
+        <div class="price-amount">29<span> €</span></div>
+        <div class="price-desc" data-i18n="t1_desc">Pour découvrir NEUROX, simplement.</div>
         <div class="price-list">
-          <div class="price-item" data-i18n="p2_i1">IA d'analyse comportementale</div>
-          <div class="price-item" data-i18n="p2_i2">Statistiques avancées</div>
-          <div class="price-item" data-i18n="p2_i3">Thèmes & plantes exclusifs</div>
-          <div class="price-item" data-i18n="p2_i4">Ambiances musicales étendues</div>
-          <div class="price-item" data-i18n="p2_i5">Mémo-Kit & organisation</div>
+          <div class="price-item" data-i18n="t1_i1">Boîtier simple</div>
+          <div class="price-item" data-i18n="t1_i2">App de base</div>
+          <div class="price-item" data-i18n="t1_i3">Packaging simple</div>
         </div>
       </div>
+
+      <div class="price-card feat featured-tier">
+        <div class="featured-ribbon">⭐ <span data-i18n="t2_ribbon">LE PLUS POPULAIRE</span></div>
+        <div class="price-badge" data-i18n="price_badge">BIENTÔT DISPONIBLE</div>
+        <div class="price-name" data-i18n="t2_name">Standard</div>
+        <div class="price-amount">49<span> €</span></div>
+        <div class="price-desc" data-i18n="t2_desc">Le meilleur rapport valeur / prix.</div>
+        <div class="price-list">
+          <div class="price-item" data-i18n="t2_i1">Boîtier premium</div>
+          <div class="price-item" data-i18n="t2_i2">Jeton métallique</div>
+          <div class="price-item" data-i18n="t2_i3">Packaging premium</div>
+          <div class="price-item" data-i18n="t2_i4">2 mois Premium inclus</div>
+        </div>
+        <div class="value-hint" data-i18n="t2_hint">👉 Beaucoup plus de valeur pour seulement +20 €</div>
+      </div>
+
+      <div class="price-card founders-tier">
+        <div class="price-badge founders-badge" data-i18n="t3_badge">ÉDITION LIMITÉE</div>
+        <div class="price-name" data-i18n="t3_name">💎 Founders</div>
+        <div class="price-amount">99<span> €</span></div>
+        <div class="price-desc" data-i18n="t3_desc">Pour les premiers vrais soutiens du projet.</div>
+        <div class="price-list">
+          <div class="price-item" data-i18n="t3_i1">Tout le contenu Standard</div>
+          <div class="price-item" data-i18n="t3_i2">Édition limitée numérotée</div>
+          <div class="price-item" data-i18n="t3_i3">Packaging collector</div>
+          <div class="price-item" data-i18n="t3_i4">Bonus exclusifs</div>
+        </div>
+      </div>
+
     </div>
+
+    <!-- App Premium — separate subscription, applies to any device -->
+    <div class="premium-app-divider">
+      <span data-i18n="premium_divider">+ disponible sur tous les boîtiers</span>
+    </div>
+    <div class="premium-app-card">
+      <div class="premium-app-icon">📱</div>
+      <div class="premium-app-info">
+        <div class="premium-app-name" data-i18n="papp_name">App Premium</div>
+        <div class="premium-app-desc" data-i18n="papp_desc">En option, sur n'importe quel boîtier. La version gratuite reste complète.</div>
+      </div>
+      <div class="premium-app-price">1,99<span data-i18n="papp_per">€/mois</span></div>
+    </div>
+
   </div>
 </section>
 
@@ -532,9 +590,11 @@ const LANGS = {
     dev_tag:"L'appareil", dev_title:'Concret.<br><em>Physique.</em> Réel.',
     dev_body:"L'appareil rend la concentration tangible. Ce n'est plus une app parmi d'autres — c'est un objet dédié.",
     db1:"Démarre la session & active le focus", db2_lbl:"J'AI FINI", db2:"Valide & fait pousser la plante", db3_lbl:"MUSIQUE", db3:"Lance l'ambiance choisie dans l'app", db4:"Arrêt d'urgence — déblocage immédiat",
-    price_tag:'Tarifs', price_title:'Simple.<br><em>Accessible.</em>', price_badge:'BIENTÔT DISPONIBLE',
-    p1_name:'Appareil NEUROX', p1_desc:"Achat unique. Pas d'abonnement obligatoire.", p1_i1:'Boîtier compact & premium', p1_i2:'4 boutons physiques', p1_i3:'Plante virtuelle incluse', p1_i4:'Matériaux éco-responsables', p1_i5:'Compatible iOS & Android',
-    p2_name:'App Premium', p2_per:' €/mois', p2_desc:"En option. La version gratuite reste complète.", p2_i1:"IA d'analyse comportementale", p2_i2:'Statistiques avancées', p2_i3:'Thèmes & plantes exclusifs', p2_i4:'Ambiances musicales étendues', p2_i5:'Mémo-Kit & organisation',
+    price_tag:'Tarifs', price_title:'Trois façons<br>de <em>commencer.</em>', price_badge:'BIENTÔT DISPONIBLE',
+    t1_name:'Essential', t1_desc:'Pour découvrir NEUROX, simplement.', t1_i1:'Boîtier simple', t1_i2:'App de base', t1_i3:'Packaging simple',
+    t2_ribbon:'LE PLUS POPULAIRE', t2_name:'Standard', t2_desc:'Le meilleur rapport valeur / prix.', t2_i1:'Boîtier premium', t2_i2:'Jeton métallique', t2_i3:'Packaging premium', t2_i4:'2 mois Premium inclus', t2_hint:'👉 Beaucoup plus de valeur pour seulement +20 €',
+    t3_badge:'ÉDITION LIMITÉE', t3_name:'💎 Founders', t3_desc:'Pour les premiers vrais soutiens du projet.', t3_i1:'Tout le contenu Standard', t3_i2:'Édition limitée numérotée', t3_i3:'Packaging collector', t3_i4:'Bonus exclusifs',
+    premium_divider:'+ disponible sur tous les boîtiers', papp_name:'App Premium', papp_desc:"En option, sur n'importe quel boîtier. La version gratuite reste complète.", papp_per:'€/mois',
     notify_tag:'Rejoindre la liste', notify_title:'Créé par <em>Ivan,</em><br>14 ans.',
     notify_sub:"J'ai conçu NEUROX parce que je voulais quelque chose qui me donne <strong>vraiment envie</strong> de travailler. Pas une app stressante — quelque chose de vivant.<br><br>Le prototype est sur SOLIDWORKS, bientôt imprimé au FABLAB de Dassault Systèmes.",
     email_placeholder:'ton@email.com', notify_btn:'Planter ma graine 🌱',
@@ -567,9 +627,11 @@ const LANGS = {
     dev_tag:'The device', dev_title:'Concrete.<br><em>Physical.</em> Real.',
     dev_body:"The device makes concentration tangible. It's no longer just another app — it's a dedicated object.",
     db1:'Starts session & activates focus', db2_lbl:'DONE', db2:'Validates & grows the plant', db3_lbl:'MUSIC', db3:'Launches chosen atmosphere from app', db4:'Emergency stop — immediate unlock',
-    price_tag:'Pricing', price_title:'Simple.<br><em>Accessible.</em>', price_badge:'COMING SOON',
-    p1_name:'NEUROX Device', p1_desc:'One-time purchase. No required subscription.', p1_i1:'Compact & premium case', p1_i2:'4 physical buttons', p1_i3:'Virtual plant included', p1_i4:'Eco-responsible materials', p1_i5:'iOS & Android compatible',
-    p2_name:'Premium App', p2_per:' €/month', p2_desc:'Optional. The free version stays complete.', p2_i1:'Behavioral AI analysis', p2_i2:'Advanced statistics', p2_i3:'Exclusive themes & plants', p2_i4:'Extended music library', p2_i5:'Memo-Kit & organization',
+    price_tag:'Pricing', price_title:'Three ways<br>to <em>start.</em>', price_badge:'COMING SOON',
+    t1_name:'Essential', t1_desc:'A simple way to discover NEUROX.', t1_i1:'Simple case', t1_i2:'Basic app', t1_i3:'Simple packaging',
+    t2_ribbon:'MOST POPULAR', t2_name:'Standard', t2_desc:'The best value for the price.', t2_i1:'Premium case', t2_i2:'Metal token', t2_i3:'Premium packaging', t2_i4:'2 months of Premium included', t2_hint:'👉 Far more value for just +€20',
+    t3_badge:'LIMITED EDITION', t3_name:'💎 Founders', t3_desc:'For the very first real supporters.', t3_i1:'Everything in Standard', t3_i2:'Numbered limited edition', t3_i3:'Collector packaging', t3_i4:'Exclusive bonuses',
+    premium_divider:'+ available on any device', papp_name:'Premium App', papp_desc:'Optional, on any device. The free version stays complete.', papp_per:'€/month',
     notify_tag:'Join the list', notify_title:'Created by <em>Ivan,</em><br>age 14.',
     notify_sub:"I designed NEUROX because I wanted something that <strong>actually makes me want</strong> to work. Not a stressful app — something alive.<br><br>The prototype is on SOLIDWORKS, soon printed at the Dassault Systèmes FABLAB.",
     email_placeholder:'your@email.com', notify_btn:'Plant my seed 🌱',
@@ -602,9 +664,11 @@ const LANGS = {
     dev_tag:'El dispositivo', dev_title:'Concreto.<br><em>Físico.</em> Real.',
     dev_body:"El dispositivo hace tangible la concentración. Ya no es solo otra app — es un objeto dedicado.",
     db1:'Inicia sesión y activa el enfoque', db2_lbl:'LISTO', db2:'Valida y hace crecer la planta', db3_lbl:'MÚSICA', db3:'Lanza el ambiente elegido en la app', db4:'Parada de emergencia — desbloqueo inmediato',
-    price_tag:'Precios', price_title:'Simple.<br><em>Accesible.</em>', price_badge:'PRÓXIMAMENTE',
-    p1_name:'Dispositivo NEUROX', p1_desc:'Compra única. Sin suscripción obligatoria.', p1_i1:'Carcasa compacta y premium', p1_i2:'4 botones físicos', p1_i3:'Planta virtual incluida', p1_i4:'Materiales ecorresponsables', p1_i5:'Compatible iOS y Android',
-    p2_name:'App Premium', p2_per:' €/mes', p2_desc:'Opcional. La versión gratuita sigue completa.', p2_i1:'IA de análisis conductual', p2_i2:'Estadísticas avanzadas', p2_i3:'Temas y plantas exclusivos', p2_i4:'Biblioteca musical ampliada', p2_i5:'Memo-Kit y organización',
+    price_tag:'Precios', price_title:'Tres formas<br>de <em>empezar.</em>', price_badge:'PRÓXIMAMENTE',
+    t1_name:'Essential', t1_desc:'Para descubrir NEUROX, simplemente.', t1_i1:'Carcasa simple', t1_i2:'App básica', t1_i3:'Embalaje simple',
+    t2_ribbon:'MÁS POPULAR', t2_name:'Standard', t2_desc:'La mejor relación valor / precio.', t2_i1:'Carcasa premium', t2_i2:'Ficha metálica', t2_i3:'Embalaje premium', t2_i4:'2 meses de Premium incluidos', t2_hint:'👉 Mucho más valor por solo +20 €',
+    t3_badge:'EDICIÓN LIMITADA', t3_name:'💎 Founders', t3_desc:'Para los primeros verdaderos seguidores del proyecto.', t3_i1:'Todo lo de Standard', t3_i2:'Edición limitada numerada', t3_i3:'Embalaje de colección', t3_i4:'Bonos exclusivos',
+    premium_divider:'+ disponible en cualquier dispositivo', papp_name:'App Premium', papp_desc:'Opcional, en cualquier dispositivo. La versión gratuita sigue completa.', papp_per:'€/mes',
     notify_tag:'Unirse a la lista', notify_title:'Creado por <em>Ivan,</em><br>14 años.',
     notify_sub:"Diseñé NEUROX porque quería algo que me diera <strong>verdaderas ganas</strong> de trabajar. No una app estresante — algo vivo.<br><br>El prototipo está en SOLIDWORKS, pronto impreso en el FABLAB de Dassault Systèmes.",
     email_placeholder:'tu@email.com', notify_btn:'Plantar mi semilla 🌱',
@@ -637,14 +701,16 @@ const LANGS = {
     dev_tag:'Устройство', dev_title:'Конкретное.<br><em>Физическое.</em> Реальное.',
     dev_body:'Устройство делает концентрацию ощутимой. Это больше не просто приложение — это специальный объект.',
     db1:'Запускает сессию и активирует фокус', db2_lbl:'ГОТОВО', db2:'Подтверждает и выращивает растение', db3_lbl:'МУЗЫКА', db3:'Запускает выбранную атмосферу в приложении', db4:'Аварийная остановка — немедленная разблокировка',
-    price_tag:'Цены', price_title:'Просто.<br><em>Доступно.</em>', price_badge:'СКОРО',
-    p1_name:'Устройство NEUROX', p1_desc:'Единовременная покупка. Никаких обязательных подписок.', p1_i1:'Компактный и премиальный корпус', p1_i2:'4 физические кнопки', p1_i3:'Виртуальное растение включено', p1_i4:'Экоответственные материалы', p1_i5:'Совместимо с iOS и Android',
-    p2_name:'Премиум приложение', p2_per:' €/мес', p2_desc:'Опционально. Бесплатная версия остаётся полноценной.', p2_i1:'ИИ-анализ поведения', p2_i2:'Расширенная статистика', p2_i3:'Эксклюзивные темы и растения', p2_i4:'Расширенная музыкальная библиотека', p2_i5:'Memo-Kit и организация',
+    price_tag:'Цены', price_title:'Три способа<br><em>начать.</em>', price_badge:'СКОРО',
+    t1_name:'Essential', t1_desc:'Чтобы просто открыть для себя NEUROX.', t1_i1:'Простой корпус', t1_i2:'Базовое приложение', t1_i3:'Простая упаковка',
+    t2_ribbon:'САМЫЙ ПОПУЛЯРНЫЙ', t2_name:'Standard', t2_desc:'Лучшее соотношение цены и ценности.', t2_i1:'Премиальный корпус', t2_i2:'Металлический жетон', t2_i3:'Премиальная упаковка', t2_i4:'2 месяца Premium включены', t2_hint:'👉 Намного больше ценности всего за +20 €',
+    t3_badge:'ОГРАНИЧЕННАЯ СЕРИЯ', t3_name:'💎 Founders', t3_desc:'Для первых настоящих сторонников проекта.', t3_i1:'Всё из Standard', t3_i2:'Нумерованное ограниченное издание', t3_i3:'Коллекционная упаковка', t3_i4:'Эксклюзивные бонусы',
+    premium_divider:'+ доступно на любом устройстве', papp_name:'Премиум приложение', papp_desc:'Опционально, на любом устройстве. Бесплатная версия остаётся полноценной.', papp_per:'€/мес',
     notify_tag:'Присоединиться к списку', notify_title:'Создано <em>Иваном,</em><br>14 лет.',
     notify_sub:'Я разработал NEUROX, потому что хотел что-то, что <strong>действительно даёт желание</strong> работать. Не стрессовое приложение — что-то живое.<br><br>Прототип на SOLIDWORKS, скоро будет напечатан в FABLAB Dassault Systèmes.',
     email_placeholder:'твой@email.com', notify_btn:'Посадить моё семя 🌱',
     modal_title:'Твоё семя проросло!', modal_rank_txt:'Ты <strong id="modalRankLabel">—й</strong><br>кто присоединился к NEUROX',
-    modal_body:'Мы оповестим тебя, как только NEUROX будет готов.', modal_btn:'Я выращу своё дерево 🌳',
+    modal_body:'Письмо с подтверждением ждёт тебя 📬<br>Мы оповестим тебя, как только NEUROX будет готов.', modal_btn:'Я выращу своё дерево 🌳',
     footer_mid:'Прототип в разработке · Создано Иваном · 2025', footer_right:'Великие вещи растут медленно.',
     err_email:'Введи корректный email 🌿', err_conn:'Нет соединения. Попробуй снова.', err_generic:'Ошибка — попробуй снова.', already:'Ты уже в саду 🌿', sending:'Посадка…'
   },
@@ -672,9 +738,11 @@ const LANGS = {
     dev_tag:'设备', dev_title:'具体。<br><em>实体。</em> 真实。',
     dev_body:'设备让专注变得有形可感。它不再只是另一个应用 — 而是一个专用物件。',
     db1:'启动工作阶段并激活专注', db2_lbl:'完成', db2:'验证并使植物生长', db3_lbl:'音乐', db3:'在应用中启动所选氛围', db4:'紧急停止 — 立即解锁',
-    price_tag:'价格', price_title:'简单。<br><em>实惠。</em>', price_badge:'即将推出',
-    p1_name:'NEUROX 设备', p1_desc:'一次性购买。无需强制订阅。', p1_i1:'紧凑且高端的外壳', p1_i2:'4个物理按钮', p1_i3:'包含虚拟植物', p1_i4:'环保负责任的材料', p1_i5:'兼容iOS和Android',
-    p2_name:'高级应用', p2_per:' €/月', p2_desc:'可选。免费版仍然完整。', p2_i1:'行为AI分析', p2_i2:'高级统计', p2_i3:'专属主题和植物', p2_i4:'扩展音乐库', p2_i5:'备忘套件和组织',
+    price_tag:'价格', price_title:'三种方式<br><em>开始。</em>', price_badge:'即将推出',
+    t1_name:'Essential', t1_desc:'简单体验NEUROX的方式。', t1_i1:'简易外壳', t1_i2:'基础应用', t1_i3:'简易包装',
+    t2_ribbon:'最受欢迎', t2_name:'Standard', t2_desc:'性价比最高的选择。', t2_i1:'高端外壳', t2_i2:'金属代币', t2_i3:'高端包装', t2_i4:'包含2个月高级版', t2_hint:'👉 仅需多付20€即可获得更多价值',
+    t3_badge:'限量版', t3_name:'💎 Founders', t3_desc:'献给项目最早的真正支持者。', t3_i1:'包含Standard全部内容', t3_i2:'编号限量版', t3_i3:'收藏家包装', t3_i4:'专属奖励',
+    premium_divider:'+ 适用于任何设备', papp_name:'高级应用', papp_desc:'可选，适用于任何设备。免费版仍然完整。', papp_per:'€/月',
     notify_tag:'加入列表', notify_title:'由<em>伊万</em>创建，<br>14岁。',
     notify_sub:'我设计了NEUROX，因为我想要一些<strong>真正让我想要工作</strong>的东西。不是有压力的应用 — 而是有生命的东西。<br><br>原型正在SOLIDWORKS上，即将在达索系统FABLAB打印。',
     email_placeholder:'你的@email.com', notify_btn:'种下我的种子 🌱',
