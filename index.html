@@ -914,13 +914,19 @@ document.querySelectorAll('.sr,.sr-l,.sr-r,.sr-s,.stag').forEach(el=>obs.observe
    LIVE COUNTER
 ══════════════════════════════════════ */
 let curCount=0;
+/* Compteur sécurisé : passe par l'Edge Function get-count,
+   qui ne renvoie QUE le nombre — jamais les emails.
+   La table waitlist n'a plus aucune policy SELECT publique. */
 async function fetchCount(){
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=email`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'count=exact','Range':'0-0'}
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/get-count`,{
+      headers:{'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const m=(res.headers.get('Content-Range')||'').match(/\/([0-9]+)/);
-    if(m){const n=parseInt(m[1],10);animCount(curCount,n,document.getElementById('lcNum'));curCount=n;}
+    const data=await res.json();
+    if(typeof data.count==='number'){
+      animCount(curCount,data.count,document.getElementById('lcNum'));
+      curCount=data.count;
+    }
   }catch(_){}
 }
 function animCount(from,to,el){
